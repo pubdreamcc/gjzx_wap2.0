@@ -1,6 +1,6 @@
 # lbxy-v1-wap
 
-> 本项目是国匠在线旗下鲁班学院移动端，用到的技术栈：vue+vuex+axios+vux(vue移动端ui框架)+flexible.js(移动端适配方案)+sass(css预处理技术)
+> 本项目是国匠在线旗下鲁班学院移动端，用到的技术栈：vue+vuex+axios+mint-ui(vue移动端ui框架)+flexible.js(移动端适配方案)+sass(css预处理技术)
 
 ## Build Setup
 
