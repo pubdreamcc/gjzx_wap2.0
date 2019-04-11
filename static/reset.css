@@ -50,3 +50,7 @@ a{
   content: '';
   clear: both;
 }
+.clearMargin_top::before{
+  content: '';
+  display: table;
+}

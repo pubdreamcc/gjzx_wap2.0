@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="mine">
     <div class="footer">
       <div class="home"><a href="/home"><img src="../assets/imgs/bat_home@2x.png"><span>首页</span></a></div>
       <div class="home"><a href="/resourcecenter"><img src="../assets/imgs/home_bat_resource_icon@2x.png"><span>资源中心</span></a></div>
@@ -37,6 +37,24 @@ export default {
         font-weight:400;
         color:rgba(50,70,216,1);
         line-height:28px;
+      }
+      &:nth-child(1){
+        img{
+          width: 42px;
+          height: 42px;
+        }
+      }
+      &:nth-child(2){
+        img{
+          width: 54px;
+          height: 36px;
+        }
+      }
+      &:nth-child(3){
+        img{
+          width: 38px;
+          height: 45px;
+        }
       }
     }
   }
