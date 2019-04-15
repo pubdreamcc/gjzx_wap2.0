@@ -78,10 +78,12 @@ export default {
 
 <style lang="scss">
   .header{
+    position: fixed;
+    z-index: 1;
+    top: 0;
     width:750px;
     height:126px;
     background:rgba(50,70,216,1);
-    position: relative;
     span{
       display: block;
       margin: 54px auto 16px;
@@ -109,7 +111,7 @@ export default {
     }
   }
   .slide_banner{
-    margin-top: 24px;
+    margin-top: 150px;
     height: 320px;
     img{
       width: 100%;
@@ -226,6 +228,7 @@ export default {
     .mint-tab-container{
       margin-top: 22px;
       padding-right: 20px;
+      height: 400px;
       .course{
         img{
           width:272px;
@@ -271,6 +274,9 @@ export default {
     }
   }
   .footer{
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
     width: 750px;
     height: 101px;
     display: flex;
