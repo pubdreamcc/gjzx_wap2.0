@@ -4,6 +4,7 @@ import Home from '../components/Home.vue'
 import ResourceCenter from '../components/ResourceCenter.vue'
 import Mine from '../components/Mine.vue'
 import Search from '../components/Search.vue'
+import Register from '../components/Register.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -23,6 +24,11 @@ export default new Router({
       path: '/mine',
       component: Mine,
       name: 'Mine'
+    },
+    {
+      path: '/register',
+      component: Register,
+      name: 'Register'
     },
     {
       path: '/search',

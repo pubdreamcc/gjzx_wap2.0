@@ -2,23 +2,90 @@
   <div class="mine">
     <a href="javascript:;" class="backArrow" @click="goBack"><img src="../assets/imgs/live_direction_left@2x.png"></a>
     <p class="banner">登录国凯鲁班学院</p>
-    <div class="inputPhone"><span>+86</span><input type="text" placeholder="请输入手机号"></div>
-    <div class="inputPsd"><input type="text" placeholder="请输入密码"></div>
-    <div class="forgetPsd"><span>忘记密码</span></div>
-    <div class="btn"><button class="register_btn">注册</button><button class="login_btn">登录</button></div>
+    <div class="inputPhone"><span>+86</span><input type="text" placeholder="请输入手机号" v-model="phoneNumber" @blur="checkPhone" @focus="changeFlag0('phone')"><img src="../assets/imgs/mistake@2x.png" v-if="phoneImgFlag" v-show="phoneImgFlag0"><img src="../assets/imgs/correct@2x.png" v-else></div>
+    <div class="inputPsd"><input type="password" placeholder="请输入密码" v-model="psd" @focus="changeFlag0('psd')" @blur="checkPsd"><img src="../assets/imgs/mistake@2x.png" v-if="psdImgFlag" v-show="psdImgFlag0"><img src="../assets/imgs/correct@2x.png" v-else></div>
+    <div class="forgetPsd"><span v-show="Tips">请确认手机号和密码有效性</span><span>忘记密码</span></div>
+    <div class="btn"><button class="register_btn" @click="goRegister">注册</button><button class="login_btn" @click="goLogin">登录</button></div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: '',
   data () {
-    return {}
+    return {
+      phoneNumber: '',
+      psdImgFlag: true,
+      phoneImgFlag: true,
+      phoneImgFlag0: false,
+      psdImgFlag0: false,
+      psd: '',
+      Tips: false
+    }
   },
-  components: {},
+  watch: {
+    phoneNumber () {
+      this.checkNumber()
+    }
+  },
   methods: {
     goBack () {
       this.$router.go(-1)
+    },
+    goRegister () {
+      this.$router.replace('/register')
+    },
+    goLogin () {
+      if (!(this.psdImgFlag) && !(this.phoneImgFlag) && !(this.Tips)) {
+        // 发送Ajax请求获取后台数据
+        let URL = 'http://www.gk0101.com/cms/rest/v1/login/doLogin'
+        let params = new URLSearchParams()
+        let paramObj = {userAccount: this.phoneNumber, userPassword: this.psd, equipmentType: 3, institutionId: '10103', publicIp: '183.56.162.88'}
+        params.append('params', JSON.stringify(paramObj))
+        axios.post(URL, params).then(res => {
+          const result = res.data.code
+          if (result === 0) {
+            // 跳转至首页,登录成功
+            this.$router.replace('/home')
+          } else {
+            // 显示错误提示信息
+            this.Tips = true
+          }
+        }).catch(error => {
+          alert('登录失败了~~~' + error)
+        })
+      }
+    },
+    checkNumber () {
+      if (!(/^\d+/.test(this.phoneNumber))) {
+        this.phoneNumber = ''
+      } else {
+        this.phoneNumber = this.phoneNumber.replace(/\D/g, '')
+      }
+    },
+    changeFlag0 (value) {
+      if (value === 'phone') {
+        this.phoneImgFlag0 = true
+        this.Tips = false
+      } else if (value === 'psd') {
+        this.psdImgFlag0 = true
+        this.Tips = false
+      }
+    },
+    checkPhone () {
+      if (!(/^1[34578]\d{9}$/.test(this.phoneNumber))) {
+        this.phoneImgFlag = true
+      } else {
+        this.phoneImgFlag = false
+      }
+    },
+    checkPsd () {
+      if (this.psd) {
+        this.psdImgFlag = false
+      } else {
+        this.psdImgFlag = true
+      }
     }
   }
 }
@@ -79,10 +146,18 @@ export default {
         left: 122px;
         top: 24px;
       }
+      img{
+        position: absolute;
+        right: 7px;
+        top: 18px;
+        width: 60px;
+        height: 60px;
+      }
     }
     .inputPsd{
       margin-top: 48px;
       text-align: center;
+      position: relative;
       input{
         width:600px;
         height:96px;
@@ -100,20 +175,38 @@ export default {
           color: rgba(153,153,153,1);
         }
       }
+      img{
+        position: absolute;
+        right: 7px;
+        top: 18px;
+        width: 60px;
+        height: 60px;
+      }
     }
     .forgetPsd{
       margin-top: 34px;
       padding-right: 74px;
-      text-align: right;
+      padding-left: 76px;
       span{
-        display: inline-block;
+        &:nth-child(2){
+        float: right;
         width:112px;
         height:40px;
         font-size:28px;
         font-family:PingFangSC-Regular;
         font-weight:400;
-        color:rgba(102,102,102,1);
+        color: #3246D8;
         line-height:40px;
+        }
+        &:nth-child(1){
+          display: inline-block;
+          height:40px;
+          font-size:28px;
+          font-family:PingFangSC-Regular;
+          font-weight:400;
+          color:red;
+          line-height:40px;
+        }
       }
     }
     .btn{
@@ -126,7 +219,6 @@ export default {
         border:4px solid rgba(50,70,216,1);
         outline: none;
         font-size:34px;
-        line-height: 96px;
         font-family:PingFangSC-Regular;
         font-weight:400;
         text-align: center;
