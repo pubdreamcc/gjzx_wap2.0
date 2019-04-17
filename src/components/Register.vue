@@ -4,8 +4,8 @@
   <p class="register_banner">注册</p>
   <div class="inputPhone"><input type="text" placeholder="请输入手机号" v-model="phoneNumber" @focus="changeFlag0('phone')" @blur="checkPhone" @keyup="checkNewphone"/><span>+86</span><img src="../assets/imgs/mistake@2x.png" v-if="phoneImgFlag" v-show="phoneImgFlag0"><img src="../assets/imgs/correct@2x.png" v-else></div>
   <div class="inputConfirm"><input type="text" placeholder="验证码" v-model="confirmNumber" @focus="changeFlag0('confirm')" @blur="checkConfirm"/><span @click="getConfirm" ref="getConfirm">获取验证码</span><img src="../assets/imgs/mistake@2x.png" v-if="confirmImgFlag" v-show="confirmImgFlag0"><img src="../assets/imgs/correct@2x.png" v-else></div>
-  <div class="inputPsd"><input type="password" placeholder="请输入密码" v-model="psd" @focus="changeFlag0('psd')" @blur="checkPsd"/><img src="../assets/imgs/mistake@2x.png" v-if="psdImgFlag" v-show="psdImgFlag0"><img src="../assets/imgs/correct@2x.png" v-else></div>
-  <div class="btn"><button>立即注册</button></div>
+  <div class="inputPsd"><input type="password" placeholder="请输入密码" v-model="psd" @focus="changeFlag0('psd')" @blur="checkPsd" @keyup="checkEffectivePsd"/><img src="../assets/imgs/mistake@2x.png" v-if="psdImgFlag" v-show="psdImgFlag0"><img src="../assets/imgs/correct@2x.png" v-else></div>
+  <div class="btn"><button @click="goRegister">立即注册</button><span v-text="errorTipsMsg"></span></div>
  </div>
 </template>
 
@@ -25,7 +25,9 @@ export default {
       phoneNumber: '',
       confirmNumber: '',
       newPhone: false,
-      time: 60
+      time: 60,
+      TipsMsg: ['手机号码已经注册', '密码为6位且不超过20位的数字或字母或下划线组成', '验证码错误'],
+      errorTipsMsg: ''
     }
   },
   watch: {
@@ -64,8 +66,10 @@ export default {
           const result = res.data.mess
           if (result) {
             this.newPhone = false
+            this.errorTipsMsg = this.TipsMsg[0]
           } else {
             this.newPhone = true
+            this.errorTipsMsg = ''
           }
         }).catch(error => {
           alert('判断手机号是否已经注册失败' + error)
@@ -75,8 +79,10 @@ export default {
     checkPhone () {
       if (!(/^1[34578]\d{9}$/.test(this.phoneNumber))) {
         this.phoneImgFlag = true
-      } else {
+      } else if (this.newPhone) {
         this.phoneImgFlag = false
+      } else {
+        this.phoneImgFlag = true
       }
     },
     checkConfirm () {
@@ -87,10 +93,17 @@ export default {
       }
     },
     checkPsd () {
-      if (this.psd) {
+      if (this.psd && this.errorTipsMsg !== this.TipsMsg[1]) {
         this.psdImgFlag = false
       } else {
         this.psdImgFlag = true
+      }
+    },
+    checkEffectivePsd () {
+      if (!(/^[\w]{6,20}$/.test(this.psd))) {
+        this.errorTipsMsg = this.TipsMsg[1]
+      } else {
+        this.errorTipsMsg = ''
       }
     },
     getConfirm () {
@@ -117,6 +130,28 @@ export default {
           console.log(result)
         }).catch(error => {
           alert('短信验证发送错误' + error)
+        })
+      }
+    },
+    goRegister () {
+      if ((!this.errorTipsMsg || this.errorTipsMsg === this.TipsMsg[2]) && !this.phoneImgFlag && !this.psdImgFlag && this.newPhone && !this.confirmImgFlag) {
+        // 发送Ajax请求注册用户信息
+        let URL = 'http://www.gk0101.com/cms/registUser'
+        let userInfoObj = {mobile: this.phoneNumber, userPassword: this.psd, code: this.confirmNumber, equipmentType: 3, institutionId: '10103'}
+        let params = new URLSearchParams()
+        params.append('params', JSON.stringify(userInfoObj))
+        axios.post(URL, params).then(res => {
+          let result = res.data.code
+          if (result === 0) {
+            // 注册成功跳转至首页
+            this.$router.replace('/home')
+            this.errorTipsMsg = ''
+          } else {
+            this.errorTipsMsg = this.TipsMsg[2]
+            this.confirmImgFlag = true
+          }
+        }).catch(error => {
+          alert('注册用户失败' + error)
         })
       }
     }
@@ -270,6 +305,16 @@ export default {
         font-family:PingFangSC-Regular;
         font-weight:400;
         color:rgba(255,255,255,1);
+      }
+      span{
+        display: block;
+        margin-top: 20px;
+        color: red;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        font-size: 28px;
+        height: 40px;
+        line-height: 40px;
       }
     }
   }
