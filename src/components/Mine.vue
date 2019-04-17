@@ -45,6 +45,8 @@ export default {
         params.append('params', JSON.stringify(paramObj))
         axios.post(URL, params).then(res => {
           const result = res.data.code
+          // 保存用户的id值
+          // const userID = res.data.data.id
           if (result === 0) {
             // 跳转至首页,登录成功
             this.$router.replace('/home')
