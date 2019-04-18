@@ -46,10 +46,11 @@ export default {
         axios.post(URL, params).then(res => {
           const result = res.data.code
           // 保存用户的id值
-          // const userID = res.data.data.id
+          const userID = res.data.data.id
           if (result === 0) {
             // 跳转至首页,登录成功
             this.$router.replace('/home')
+            localStorage.setItem('userID', userID)
           } else {
             // 显示错误提示信息
             this.Tips = true

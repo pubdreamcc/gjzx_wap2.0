@@ -6,6 +6,7 @@ import Mine from '../components/Mine.vue'
 import Search from '../components/Search.vue'
 import Register from '../components/Register.vue'
 import Myinfo from '../components/MyInfo.vue'
+import Setting from '../components/Setting.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -20,6 +21,11 @@ const router = new Router({
       path: '/resourcecenter',
       component: ResourceCenter,
       name: 'ResourceCenter'
+    },
+    {
+      path: '/setting',
+      component: Setting,
+      name: 'Setting'
     },
     {
       path: '/mine',
@@ -50,8 +56,9 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.name === 'Mine') {
     // 登陆/注册就去用户详情页
-    // if ()
-    // router.replace('/myinfo')
+    if (localStorage.getItem('userID')) {
+      router.replace('/myinfo')
+    }
   }
   next()
 })
