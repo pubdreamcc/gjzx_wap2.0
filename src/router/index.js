@@ -7,6 +7,7 @@ import Search from '../components/Search.vue'
 import Register from '../components/Register.vue'
 import Myinfo from '../components/MyInfo.vue'
 import Setting from '../components/Setting.vue'
+import PersonInfo from '../components/PersonInfo.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -31,6 +32,11 @@ const router = new Router({
       path: '/mine',
       component: Mine,
       name: 'Mine'
+    },
+    {
+      path: '/personinfo',
+      component: PersonInfo,
+      name: 'PersonInfo'
     },
     {
       path: '/register',

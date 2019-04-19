@@ -6,7 +6,7 @@
       <p class="userName">{{userInfo.userName}}</p>
       <span class="ID">学号：{{userInfo.studentNo}}</span>
       <span class="college">学院：{{userInfo.institutionName}}</span>
-      <img  class="userImg" :src="userInfo.userImg">
+      <img  class="userImg" :src="userInfo.userImg" @click="goPersonInfo">
     </div>
     <div class="person_study">
       <div class="credit"><p><span>{{userStudy.credits}}</span>/分</p><span class="get">已获学分</span></div>
@@ -87,6 +87,9 @@ export default {
   methods: {
     goSetting () {
       this.$router.push('/setting')
+    },
+    goPersonInfo () {
+      this.$router.push('/personinfo')
     }
   }
 }
