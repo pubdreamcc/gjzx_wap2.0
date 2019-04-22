@@ -65,7 +65,7 @@ export default {
       this.userInfo.institutionName = result.institutionName
       this.userInfo.userName = result.userName
       if (result.userImg) {
-        this.userInfo.userImg = result.userImg
+        this.userInfo.userImg = 'http://www.gk0101.com' + result.userImg
       }
     }).catch(error => {
       alert('获取用户个人信息失败' + error)
