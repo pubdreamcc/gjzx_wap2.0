@@ -4,9 +4,9 @@
      <a href="/myinfo"><img src="../assets/imgs/live_direction_left@2x.png"></a>
      <span>设置</span>
    </div>
-   <div class="aboutUs position_class"><span>关于我们</span><img src="../assets/imgs/direction@2x.png"></div>
+   <div class="aboutUs position_class" @click="goAboutUs"><span>关于我们</span><img src="../assets/imgs/direction@2x.png"></div>
    <div class="evaluate position_class"><span>评价</span><img src="../assets/imgs/direction@2x.png"></div>
-   <div class="changePsd position_class"><span>修改密码</span><img src="../assets/imgs/direction@2x.png"></div>
+   <div class="changePsd position_class" @click="goChangePsd"><span>修改密码</span><img src="../assets/imgs/direction@2x.png"></div>
    <div class="Sign_out"><span @click="signOut">退出登录</span></div>
  </div>
 </template>
@@ -23,6 +23,12 @@ export default {
       this.$router.replace('/home')
       // 清楚localStorage中存储的userID
       localStorage.clear()
+    },
+    goAboutUs () {
+      this.$router.push('/aboutus')
+    },
+    goChangePsd () {
+      this.$router.push('/changepsd')
     }
   }
 }

@@ -8,6 +8,11 @@ import Register from '../components/Register.vue'
 import Myinfo from '../components/MyInfo.vue'
 import Setting from '../components/Setting.vue'
 import PersonInfo from '../components/PersonInfo.vue'
+import MyCertificate from '../components/MyCertificate.vue'
+import AboutUs from '../components/AboutUs.vue'
+import ChangePsd from '../components/ChangePsd.vue'
+import MyNotices from '../components/MyNotices.vue'
+import NoticeDetail from '../components/NoticeDetail.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -19,14 +24,39 @@ const router = new Router({
       name: 'Home'
     },
     {
+      path: '/mynotices',
+      component: MyNotices,
+      name: 'MyNotices'
+    },
+    {
       path: '/resourcecenter',
       component: ResourceCenter,
       name: 'ResourceCenter'
     },
     {
+      path: '/noticedetail',
+      component: NoticeDetail,
+      name: 'NoticeDetail'
+    },
+    {
+      path: '/mycertificate',
+      component: MyCertificate,
+      name: 'MyCertificate'
+    },
+    {
+      path: '/changepsd',
+      component: ChangePsd,
+      name: 'ChangePsd'
+    },
+    {
       path: '/setting',
       component: Setting,
       name: 'Setting'
+    },
+    {
+      path: '/aboutus',
+      component: AboutUs,
+      name: 'AboutUs'
     },
     {
       path: '/mine',

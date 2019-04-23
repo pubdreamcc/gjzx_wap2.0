@@ -24,13 +24,13 @@
     <div><img src="../assets/imgs/me_record@2x.png"><span>记录</span></div>
     <div></div>
   </div>
-  <div class="myCertificate clearMargin_top">
+  <div class="myCertificate clearMargin_top" @click="goMyCertificate">
     <p>国匠鲁班学院证书</p>
     <a href="javascript:;"><img src="../assets/imgs/direction@2x.png"></a>
   </div>
   <div class="myTips clearMargin_top">
     <div><img src="../assets/imgs/me_indent@2x.png" class="icon"><span>我的订单</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
-    <div><img src="../assets/imgs/me_news@2x.png" class="icon"><span>我的消息</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
+    <div @click="goMyNotices"><img src="../assets/imgs/me_news@2x.png" class="icon"><span>我的消息</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
     <div><img src="../assets/imgs/me_tickling@2x.png" class="icon"><span>问题反馈</span><span class="phone">400-609-6665</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
     <div @click="goSetting"><img src="../assets/imgs/me_setting up@2x.png" class="icon"><span>设置</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
   </div>
@@ -90,6 +90,12 @@ export default {
     },
     goPersonInfo () {
       this.$router.push('/personinfo')
+    },
+    goMyCertificate () {
+      this.$router.push('/mycertificate')
+    },
+    goMyNotices () {
+      this.$router.push('/mynotices')
     }
   }
 }
