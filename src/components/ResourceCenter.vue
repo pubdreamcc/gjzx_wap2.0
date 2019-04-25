@@ -282,8 +282,12 @@ export default {
     }
   }
   .resourcecenter .course_Info_wrap{
-    height: 2300px;
     margin-top: 140px;
+    &::after{
+      display: table;
+      content: '';
+      height: 102px;
+    }
   }
   .course_class{
     position: fixed;
