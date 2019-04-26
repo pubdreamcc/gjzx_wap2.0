@@ -13,6 +13,7 @@ import AboutUs from '../components/AboutUs.vue'
 import ChangePsd from '../components/ChangePsd.vue'
 import MyNotices from '../components/MyNotices.vue'
 import NoticeDetail from '../components/NoticeDetail.vue'
+import MyCourse from '../components/MyCourse.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -22,6 +23,11 @@ const router = new Router({
       path: '/home',
       component: Home,
       name: 'Home'
+    },
+    {
+      path: '/mycourse',
+      component: MyCourse,
+      name: 'MyCourse'
     },
     {
       path: '/mynotices',

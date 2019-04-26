@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="myInfoClass">
-    <div><img src="../assets/imgs/course@2x.png"><span>我的课程</span></div>
+    <div @click="goMyCourse"><img src="../assets/imgs/course@2x.png"><span>我的课程</span></div>
     <div><img src="../assets/imgs/me_job@2x.png"><span>课后作业</span></div>
     <div><img src="../assets/imgs/me_examination@2x.png"><span>我的考试</span></div>
     <div><img src="../assets/imgs/me_apply@2x.png"><span>考试报名</span></div>
@@ -87,6 +87,9 @@ export default {
   methods: {
     goSetting () {
       this.$router.push('/setting')
+    },
+    goMyCourse () {
+      this.$router.push('/mycourse')
     },
     goPersonInfo () {
       this.$router.push('/personinfo')
