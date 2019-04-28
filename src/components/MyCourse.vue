@@ -12,7 +12,7 @@
           <span class="courseInfo_coursetitle">{{course.courseName}}</span>
           <span class="courseInfo_courseTotal">{{course.totalMic}}节微课</span>
           <span class="courseInfo_coursePrice">免费</span>
-          <span class="studyInfo">未学习</span>
+          <span class="studyInfo">{{publicSituation[index]}}</span>
           <canvas width="72" height="72"></canvas>
         </div>
       </swiper-slide>
@@ -22,7 +22,7 @@
           <span class="courseInfo_coursetitle">{{course.courseName}}</span>
           <span class="courseInfo_courseTotal">{{course.totalMic}}节微课</span>
           <span class="courseInfo_coursePrice">免费</span>
-          <span class="studyInfo">未学习</span>
+          <span class="studyInfo">{{majorSituation[index]}}</span>
           <canvas width="72" height="72"></canvas>
         </div>
       </swiper-slide>
@@ -37,6 +37,8 @@ export default {
   data () {
     return {
       publicCourse: [],
+      publicSituation: [],
+      majorSituation: [],
       majorCourse: [],
       studyRatio: [],
       swiperOption: {
@@ -65,12 +67,27 @@ export default {
       this.publicCourse = result
       for (let i = 0; i < result.length; i++) {
         this.studyRatio.push(parseInt((result[i].learnedMic / result[i].totalMic) * 100))
+        if (result[i].learnedMic === 0) {
+          this.publicSituation[i] = '未学习'
+        } else if (result[i].learnedMic < result[i].totalMic) {
+          this.publicSituation[i] = '学习中'
+        } else if (result[i].learnedMic === result[i].totalMic) {
+          this.publicSituation[i] = '已完成'
+        }
       }
+      // 发送Ajax请求得到专业课程信息
       axios.get(URL2).then(res => {
         const result = res.data.data.result
         this.majorCourse = result
         for (let i = 0; i < result.length; i++) {
           this.studyRatio.push(parseInt((result[i].learnedMic / result[i].totalMic) * 100))
+          if (result[i].learnedMic === 0) {
+            this.majorSituation[i] = '未学习'
+          } else if (result[i].learnedMic < result[i].totalMic) {
+            this.majorSituation[i] = '学习中'
+          } else if (result[i].learnedMic === result[i].totalMic) {
+            this.majorSituation[i] = '已完成'
+          }
         }
       })
     })

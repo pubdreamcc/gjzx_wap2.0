@@ -18,8 +18,8 @@
     <div @click="goMyCourse"><img src="../assets/imgs/course@2x.png"><span>我的课程</span></div>
     <div><img src="../assets/imgs/me_job@2x.png"><span>课后作业</span></div>
     <div><img src="../assets/imgs/me_examination@2x.png"><span>我的考试</span></div>
-    <div><img src="../assets/imgs/me_apply@2x.png"><span>考试报名</span></div>
-    <div><img src="../assets/imgs/me_performance@2x.png"><span>我的成绩</span></div>
+    <div @click="goExaminationRegistration"><img src="../assets/imgs/me_apply@2x.png"><span>考试报名</span></div>
+    <div @click="goMyScore"><img src="../assets/imgs/me_performance@2x.png"><span>我的成绩</span></div>
     <div><img src="../assets/imgs/me_creditnce@2x.png"><span>学分</span></div>
     <div><img src="../assets/imgs/me_record@2x.png"><span>记录</span></div>
     <div></div>
@@ -91,8 +91,14 @@ export default {
     goMyCourse () {
       this.$router.push('/mycourse')
     },
+    goMyScore () {
+      this.$router.push('/myscore')
+    },
     goPersonInfo () {
       this.$router.push('/personinfo')
+    },
+    goExaminationRegistration () {
+      this.$router.push('/examinationregistration')
     },
     goMyCertificate () {
       this.$router.push('/mycertificate')

@@ -283,6 +283,28 @@ export default {
         border-radius: 12px;
       }
     }
+    .swiper-container{
+      .swiper-pagination{
+        box-sizing: border-box;
+        padding-right: 78px;
+        text-align: right;
+        bottom: 24px;
+        span{
+          width:20px;
+          height:8px;
+          background:rgba(153,153,153,1);
+          border-radius:7px;
+          margin: 0 10px 0 0;
+          opacity: 1;
+          &.swiper-pagination-bullet-active{
+            background:rgba(255,255,255,1);
+          }
+          &:last-child{
+            margin: 0 0 0 0;
+          }
+        }
+      }
+    }
   }
   .live_course{
     margin-top: 38px;
