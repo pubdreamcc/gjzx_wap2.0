@@ -1,6 +1,6 @@
 <template>
   <div class="mycourse">
-    <div class="header"><a href="/myinfo"><img src="../assets/imgs/live_lift@2x.png"></a><span>我的课程</span></div>
+    <div class="header"><a href="#/myinfo"><img src="../assets/imgs/live_lift@2x.png"></a><span>我的课程</span></div>
     <ul class="myCourseClass" id="myCourseClass">
       <li class="activeSelect" @click="selectMenu(0)">公共课程</li>
       <li @click="selectMenu(1)">专业课程</li>
@@ -143,7 +143,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .mycourse{
     background: #fff;
     .header{

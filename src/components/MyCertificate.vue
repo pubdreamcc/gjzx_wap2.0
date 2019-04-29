@@ -1,6 +1,6 @@
 <template>
  <div class="mycertificate">
-   <div class="header"><a href="/myinfo"><img src="../assets/imgs/live_lift@2x.png"></a><span>国凯鲁班学院证书</span></div>
+   <div class="header"><a href="#/myinfo"><img src="../assets/imgs/live_lift@2x.png"></a><span>国凯鲁班学院证书</span></div>
    <div class="certificateDetail"><span>钢筋工证书</span><a href="javascript:;"><img src="../assets/imgs/direction@2x.png"></a></div>
  </div>
 </template>
@@ -14,7 +14,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .mycertificate{
     width:750px;
     height:1334px;

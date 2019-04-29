@@ -2,7 +2,7 @@
   <div class="resourcecenter clearMargin_top">
     <div class="header">
       <span>资源中心</span>
-      <a href="/search" class="search"><img src="../assets/imgs/course_seek@2x.png"></a>
+      <a href="#/search" class="search"><img src="../assets/imgs/course_seek@2x.png"></a>
       <a href="javascript:;" class="select" @click="changeFlag"><img src="../assets/imgs/course_screen@2x.png"></a>
     </div>
     <div class="line"></div>
@@ -24,7 +24,7 @@
       </li>
     </ul>
     <div class="course_error_info" v-show="courses.length === 0">
-      <img src="../assets/imgs/搜索为空@2x.png">
+      <img src="../assets/imgs/search_not_found@2x.png">
       <p>暂时没有你想要的内容噢！</p>
     </div>
     <div class="course_Info_wrap clearMargin_top" ref="course_Info_wrap">
@@ -38,9 +38,9 @@
       </div>
     </div>
     <div class="footer">
-      <div class="home"><a href="/home"><img src="../assets/imgs/bat_home@2x.png"><span>首页</span></a></div>
+      <div class="home"><a href="#/home"><img src="../assets/imgs/bat_home@2x.png"><span>首页</span></a></div>
       <div class="home"><a href="javascript:;"><img src="../assets/imgs/bat_course@2x.png"><span>资源中心</span></a></div>
-      <div class="home"><a href="/mine"><img src="../assets/imgs/home_bat_me_icon@2x.png"><span>我的</span></a></div>
+      <div class="home"><a href="#/mine"><img src="../assets/imgs/home_bat_me_icon@2x.png"><span>我的</span></a></div>
     </div>
   </div>
 </template>
@@ -174,7 +174,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .resourcecenter .header{
     position: fixed;
     top: 0;

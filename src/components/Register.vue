@@ -159,7 +159,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .register{
     position: relative;
     .backArrow{
@@ -167,8 +167,8 @@ export default {
       left: 38px;
       top: 66px;
       img{
-        width:20px;
-        height:36px;
+        width: 48px;
+        height: 48px;
       }
     }
     .register_banner{

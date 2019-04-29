@@ -1,7 +1,7 @@
 <template>
  <div class="setting">
    <div class="header_title">
-     <a href="/myinfo"><img src="../assets/imgs/live_direction_left@2x.png"></a>
+     <a href="#/myinfo"><img src="../assets/imgs/live_direction_left@2x.png"></a>
      <span>设置</span>
    </div>
    <div class="aboutUs position_class" @click="goAboutUs"><span>关于我们</span><img src="../assets/imgs/direction@2x.png"></div>
@@ -34,7 +34,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .setting{
     background:rgba(242,242,242,1);
     height: 1334px;

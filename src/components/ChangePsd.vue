@@ -1,6 +1,6 @@
 <template>
  <div class="changepsd">
-   <div class="header"><a href="/setting"><img src="../assets/imgs/live_direction_left@2x.png"></a><span>修改密码</span></div>
+   <div class="header"><a href="#/setting"><img src="../assets/imgs/live_direction_left@2x.png"></a><span>修改密码</span></div>
    <div class="inputHeight first_input"><input type="password" placeholder="请输入原密码" v-model="oldPsd"></div>
    <div class="inputHeight"><input type="password" placeholder="请输入新密码" v-model="newPsd"></div>
    <div class="inputHeight"><input type="password" placeholder="请再次输入新密码" v-model="newPsd02"></div>
@@ -61,7 +61,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .changepsd{
     width:750px;
     height:1334px;

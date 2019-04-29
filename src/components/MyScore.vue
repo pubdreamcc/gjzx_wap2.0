@@ -1,6 +1,6 @@
 <template>
  <div class="myscore">
-   <div class="header"><a href="/myinfo"><img src="../assets/imgs/live_lift@2x.png"></a><span>我的成绩</span></div>
+   <div class="header"><a href="#/myinfo"><img src="../assets/imgs/live_lift@2x.png"></a><span>我的成绩</span></div>
    <div class="scoreRule clearMargin_top"><span>成绩计算规则</span><p><span>总成绩=观看成绩+平时成绩*20%+综合考试成绩*60%；</span><span>观看成绩：0或20分；</span><span>平时成绩：取所有章节测验的最高分后再平均；</span><span>综合考试成绩：线上或线下考试的最终成绩；</span></p></div>
    <ul class="scoreClass">
      <li>课程名称</li>
@@ -21,7 +21,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .myscore{
     background:rgba(242,242,242,1);
     .header{

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="header clearMargin_top"><span>首页</span><a href="javascript:;" class="sao"><img src="../assets/imgs/扫一扫@2x.png"></a><a href="/search" class="search"><img src="../assets/imgs/seek@2x.png"></a></div>
+    <div class="header clearMargin_top"><span>首页</span><a href="javascript:;" class="sao"><img src="../assets/imgs/扫一扫@2x.png"></a><a href="#/search" class="search"><img src="../assets/imgs/seek@2x.png"></a></div>
     <div class="slide_banner">
       <swiper :options="swiperOption" v-if="bannerImgs.length>0">
         <swiper-slide v-for="(bannerImg, index) in bannerImgs" :key="index">
@@ -15,7 +15,7 @@
       <a href="javascript:;">查看更多</a>
     </div>
     <div class="live_banner">
-      <a href="javascript:;"><img src="../assets/imgs/直播占位图.png"></a>
+      <a href="javascript:;"><img src="../assets/imgs/zhibobanner.png"></a>
     </div>
     <p class="recommend_course">
       推荐课程
@@ -90,8 +90,8 @@
     </div>
     <div class="footer">
       <div class="home"><a href="javascript:;"><img src="../assets/imgs/home_bat_home_icon@2x.png"><span>首页</span></a></div>
-      <div class="home"><a href="/resourcecenter"><img src="../assets/imgs/home_bat_resource_icon@2x.png"><span>资源中心</span></a></div>
-      <div class="home"><a href="/mine"><img src="../assets/imgs/home_bat_me_icon@2x.png"><span>我的</span></a></div>
+      <div class="home"><a href="#/resourcecenter"><img src="../assets/imgs/home_bat_resource_icon@2x.png"><span>资源中心</span></a></div>
+      <div class="home"><a href="#/mine"><img src="../assets/imgs/home_bat_me_icon@2x.png"><span>我的</span></a></div>
     </div>
   </div>
 </template>
@@ -236,41 +236,7 @@ export default {
   }
 }
 </script>
-
 <style lang="scss">
-  .header{
-    position: fixed;
-    z-index: 2;
-    top: 0;
-    width:750px;
-    height:126px;
-    background:rgba(50,70,216,1);
-    span{
-      display: block;
-      margin: 54px auto 16px;
-      width:82px;
-      height:56px;
-      font-size:40px;
-      font-family:PingFangSC-Medium;
-      font-weight:500;
-      color:rgba(255,255,255,1);
-      line-height:56px;
-    }
-    a{
-      position: absolute;
-      top: 58px;
-      img{
-        width: 48px;
-        height: 48px;
-      }
-    }
-    .sao{
-      right: 96px;
-    }
-    .search{
-      right: 24px;
-    }
-  }
   .slide_banner{
     margin-top: 150px;
     height: 320px;
@@ -304,6 +270,41 @@ export default {
           }
         }
       }
+    }
+  }
+</style>
+<style lang="scss" scoped>
+  .header{
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    width:750px;
+    height:126px;
+    background:rgba(50,70,216,1);
+    span{
+      display: block;
+      margin: 54px auto 16px;
+      width:82px;
+      height:56px;
+      font-size:40px;
+      font-family:PingFangSC-Medium;
+      font-weight:500;
+      color:rgba(255,255,255,1);
+      line-height:56px;
+    }
+    a{
+      position: absolute;
+      top: 58px;
+      img{
+        width: 48px;
+        height: 48px;
+      }
+    }
+    .sao{
+      right: 96px;
+    }
+    .search{
+      right: 24px;
     }
   }
   .live_course{

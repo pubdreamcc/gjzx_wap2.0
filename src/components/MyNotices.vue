@@ -1,6 +1,6 @@
 <template>
   <div class="mynotices">
-    <div class="header"><a href="myinfo"><img src="../assets/imgs/live_direction_left@2x.png"></a><span class="title">我的消息</span><span class="read">已读</span></div>
+    <div class="header"><a href="#/myinfo"><img src="../assets/imgs/live_direction_left@2x.png"></a><span class="title">我的消息</span><span class="read">已读</span></div>
     <div class="notice_content">
       <div class="system_notices commonStyle" @click="goNoticeDetail"><img src="../assets/imgs/messages@2x.png"><span>系统消息</span><span>最近学习的钢筋工课程考试报名已经开始啦</span><span class="time">2019.03.18</span></div>
       <div class="line"></div>
@@ -20,7 +20,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .mynotices{
     width:750px;
     height:1334px;

@@ -1,7 +1,7 @@
 <template>
  <div class="personinfo">
    <div class="personinfo_title">
-     <a href="/myinfo" class="backArrow"><img src="../assets/imgs/live_direction_left@2x.png"></a>
+     <a href="#/myinfo" class="backArrow"><img src="../assets/imgs/live_direction_left@2x.png"></a>
      <span class="person_info_title">个人信息</span>
      <span class="save" @click="save">保存</span>
    </div>
@@ -111,7 +111,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .personinfo{
     background: rgba(242,242,242,1);
     height: 1334px;

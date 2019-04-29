@@ -94,15 +94,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .mine{
     .backArrow{
       position: absolute;
       left: 38px;
       top: 66px;
       img{
-        width:20px;
-        height:36px;
+        width: 48px;
+        height: 48px;
       }
     }
     .banner{

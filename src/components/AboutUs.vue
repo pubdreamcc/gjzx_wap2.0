@@ -1,6 +1,6 @@
 <template>
  <div class="aboutus">
-   <div class="header"><a href="/setting"><img src="../assets/imgs/live_direction_left@2x.png"></a><span>关于我们</span></div>
+   <div class="header"><a href="#/setting"><img src="../assets/imgs/live_direction_left@2x.png"></a><span>关于我们</span></div>
    <img src="../assets/imgs/logo@2x.png" class="logo">
    <div class="title"><span>国凯鲁班学院</span></div>
    <div class="version"><span>V1.0.0</span></div>
@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .aboutus{
     width:750px;
     height:1334px;

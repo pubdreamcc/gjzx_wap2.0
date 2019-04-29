@@ -1,7 +1,7 @@
 <template>
  <div class="myInfo clearMargin_top">
   <div class="myInfo_personcenter">
-    <img class="bg_img" src="../assets/imgs/个人中心底图@2x.png">
+    <img class="bg_img" src="../assets/imgs/personCenter@2x.png">
     <div class="person_info">
       <p class="userName">{{userInfo.userName}}</p>
       <span class="ID">学号：{{userInfo.studentNo}}</span>
@@ -36,8 +36,8 @@
   </div>
   <div class="line"></div>
   <div class="footer">
-    <div class="home"><a href="/home"><img src="../assets/imgs/bat_home@2x.png"><span>首页</span></a></div>
-    <div class="home"><a href="/resourcecenter"><img src="../assets/imgs/home_bat_resource_icon@2x.png"><span>资源中心</span></a></div>
+    <div class="home"><a href="#/home"><img src="../assets/imgs/bat_home@2x.png"><span>首页</span></a></div>
+    <div class="home"><a href="#/resourcecenter"><img src="../assets/imgs/home_bat_resource_icon@2x.png"><span>资源中心</span></a></div>
     <div class="home"><a href="javascript:;"><img src="../assets/imgs/bat_me@2x.png"><span>我的</span></a></div>
   </div>
  </div>
@@ -110,7 +110,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .myInfo{
     overflow-x: hidden;
     background: rgba(242,242,242,1);

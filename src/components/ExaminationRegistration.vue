@@ -1,6 +1,6 @@
 <template>
  <div class="examinationRegistration">
-   <div class="header"><a href="/myinfo"><img src="../assets/imgs/live_lift@2x.png"></a><span>考试报名</span></div>
+   <div class="header"><a href="#/myinfo"><img src="../assets/imgs/live_lift@2x.png"></a><span>考试报名</span></div>
    <ul class="exam_progress" id="exam_progress">
      <li class="activeSelect" @click="selectMenu(0)">全部</li>
      <li @click="selectMenu(1)">未预约</li>
@@ -68,7 +68,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .examinationRegistration{
     background:rgba(242,242,242,1);
     .header{

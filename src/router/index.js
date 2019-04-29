@@ -1,104 +1,87 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../components/Home.vue'
-import ResourceCenter from '../components/ResourceCenter.vue'
-import Mine from '../components/Mine.vue'
-import Search from '../components/Search.vue'
-import Register from '../components/Register.vue'
-import Myinfo from '../components/MyInfo.vue'
-import Setting from '../components/Setting.vue'
-import PersonInfo from '../components/PersonInfo.vue'
-import MyCertificate from '../components/MyCertificate.vue'
-import AboutUs from '../components/AboutUs.vue'
-import ChangePsd from '../components/ChangePsd.vue'
-import MyNotices from '../components/MyNotices.vue'
-import NoticeDetail from '../components/NoticeDetail.vue'
-import MyCourse from '../components/MyCourse.vue'
-import ExaminationRegistration from '../components/ExaminationRegistration.vue'
-import MyScore from '../components/MyScore.vue'
 Vue.use(Router)
 
 const router = new Router({
-  mode: 'history',
   routes: [
     {
       path: '/home',
-      component: Home,
+      component: resolve => require(['../components/Home.vue'], resolve),
       name: 'Home'
     },
     {
       path: '/examinationregistration',
-      component: ExaminationRegistration,
+      component: resolve => require(['../components/ExaminationRegistration.vue'], resolve),
       name: 'ExaminationRegistration'
     },
     {
       path: '/myscore',
-      component: MyScore,
+      component: resolve => require(['../components/MyScore.vue'], resolve),
       name: 'MyScore'
     },
     {
       path: '/mycourse',
-      component: MyCourse,
+      component: resolve => require(['../components/MyCourse.vue'], resolve),
       name: 'MyCourse'
     },
     {
       path: '/mynotices',
-      component: MyNotices,
+      component: resolve => require(['../components/MyNotices.vue'], resolve),
       name: 'MyNotices'
     },
     {
       path: '/resourcecenter',
-      component: ResourceCenter,
+      component: resolve => require(['../components/ResourceCenter.vue'], resolve),
       name: 'ResourceCenter'
     },
     {
       path: '/noticedetail',
-      component: NoticeDetail,
+      component: resolve => require(['../components/NoticeDetail.vue'], resolve),
       name: 'NoticeDetail'
     },
     {
       path: '/mycertificate',
-      component: MyCertificate,
+      component: resolve => require(['../components/MyCertificate.vue'], resolve),
       name: 'MyCertificate'
     },
     {
       path: '/changepsd',
-      component: ChangePsd,
+      component: resolve => require(['../components/ChangePsd.vue'], resolve),
       name: 'ChangePsd'
     },
     {
       path: '/setting',
-      component: Setting,
+      component: resolve => require(['../components/Setting.vue'], resolve),
       name: 'Setting'
     },
     {
       path: '/aboutus',
-      component: AboutUs,
+      component: resolve => require(['../components/AboutUs.vue'], resolve),
       name: 'AboutUs'
     },
     {
       path: '/mine',
-      component: Mine,
+      component: resolve => require(['../components/Mine.vue'], resolve),
       name: 'Mine'
     },
     {
       path: '/personinfo',
-      component: PersonInfo,
+      component: resolve => require(['../components/PersonInfo.vue'], resolve),
       name: 'PersonInfo'
     },
     {
       path: '/register',
-      component: Register,
+      component: resolve => require(['../components/Register.vue'], resolve),
       name: 'Register'
     },
     {
       path: '/search',
-      component: Search,
+      component: resolve => require(['../components/Search.vue'], resolve),
       name: 'Search'
     },
     {
       path: '/myinfo',
-      component: Myinfo,
+      component: resolve => require(['../components/Myinfo.vue'], resolve),
       name: 'Myinfo'
     },
     {

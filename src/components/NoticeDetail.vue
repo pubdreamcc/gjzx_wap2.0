@@ -1,6 +1,6 @@
 <template>
   <div class="noticedetail">
-    <div class="header"><a href="/mynotices"><img src="../assets/imgs/live_direction_left@2x.png"></a><span>消息详情</span></div>
+    <div class="header"><a href="#/mynotices"><img src="../assets/imgs/live_direction_left@2x.png"></a><span>消息详情</span></div>
     <div class="noticedetail_content clearMargin_top"><span class="noticedetail_content_title">报名成功</span><span class="noticedetail_content_time">2019.03.18</span><p class="noticedetail_content_content">最近学习的钢筋工课程考试报名已经开始啦,你已经报名成功,考试将以实际考试时间为准,请仔细阅读考试详情,如有疑问,请致电400-609-6665</p></div>
   </div>
 </template>
@@ -11,7 +11,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .noticedetail{
     width:750px;
     height:1334px;
