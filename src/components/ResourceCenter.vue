@@ -72,6 +72,10 @@ export default {
     axios.get(URL).then(res => {
       const result = res.data.data.result
       this.courses = result
+      axios.get('http://www.gk0101.com/teach/rest/v1/course/getCourseList?pageNo=2&pageSize=10&orderBy=0&courseClassify=0&price=-1&institutionId=10103').then(res => {
+        const result = res.data.data.result
+        this.courses = this.courses.concat(result)
+      })
     }).catch(error => {
       alert('查找课程失败' + error)
     })

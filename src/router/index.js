@@ -10,6 +10,11 @@ const router = new Router({
       name: 'Home'
     },
     {
+      path: '/coursedetail',
+      component: resolve => require(['../components/CourseDetail.vue'], resolve),
+      name: 'CourseDetail'
+    },
+    {
       path: '/examinationregistration',
       component: resolve => require(['../components/ExaminationRegistration.vue'], resolve),
       name: 'ExaminationRegistration'

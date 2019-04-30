@@ -29,7 +29,7 @@
       <div class="courseWrapper" ref="courseWrapper">
         <ul class="courseWrapper_content clearfix">
           <li>
-            <div v-for="(majorCourse, index) in majorCourses1" :key="index">
+            <div v-for="(majorCourse, index) in majorCourses1" :key="index" @click="goPlayVideo(majorCourse.id)">
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
@@ -37,7 +37,7 @@
             </div>
           </li>
           <li>
-            <div v-for="(majorCourse, index) in majorCourses2" :key="index">
+            <div v-for="(majorCourse, index) in majorCourses2" :key="index" @click="goPlayVideo(majorCourse.id)">
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
@@ -45,7 +45,7 @@
             </div>
           </li>
           <li>
-            <div v-for="(majorCourse, index) in majorCourses3" :key="index">
+            <div v-for="(majorCourse, index) in majorCourses3" :key="index" @click="goPlayVideo(majorCourse.id)">
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
@@ -53,7 +53,7 @@
             </div>
           </li>
           <li>
-            <div v-for="(majorCourse, index) in majorCourses4" :key="index">
+            <div v-for="(majorCourse, index) in majorCourses4" :key="index" @click="goPlayVideo(majorCourse.id)">
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
@@ -61,7 +61,7 @@
             </div>
           </li>
           <li>
-            <div v-for="(majorCourse, index) in majorCourses5" :key="index">
+            <div v-for="(majorCourse, index) in majorCourses5" :key="index" @click="goPlayVideo(majorCourse.id)">
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
@@ -69,7 +69,7 @@
             </div>
           </li>
           <li>
-            <div v-for="(majorCourse, index) in majorCourses6" :key="index">
+            <div v-for="(majorCourse, index) in majorCourses6" :key="index" @click="goPlayVideo(majorCourse.id)">
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
@@ -77,7 +77,7 @@
             </div>
           </li>
           <li>
-            <div v-for="(majorCourse, index) in majorCourses7" :key="index">
+            <div v-for="(majorCourse, index) in majorCourses7" :key="index" @click="goPlayVideo(majorCourse.id)">
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
@@ -220,6 +220,9 @@ export default {
       let allList = this.$refs.courseWrapper.getElementsByTagName('li')
       let el = allList[index]
       this.scroll2.scrollToElement(el, 300)
+    },
+    goPlayVideo (i) {
+      this.$router.push('/coursedetail')
     }
   },
   computed: {
