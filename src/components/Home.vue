@@ -222,7 +222,12 @@ export default {
       this.scroll2.scrollToElement(el, 300)
     },
     goPlayVideo (i) {
-      this.$router.push('/coursedetail')
+      this.$router.push({
+        name: 'CourseDetail',
+        query: {
+          courseId: i
+        }
+      })
     }
   },
   computed: {

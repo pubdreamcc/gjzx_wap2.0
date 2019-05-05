@@ -2,6 +2,40 @@
   <div class="coursedetail">
     <div class="backArrow" @click="goback"><img src="../assets/imgs/live_lift@2x.png"></div>
     <videoPlayer :options='playerOptions' ref="videoPlayer" class="video-player vjs-custom-skin" :playsinline="true"></videoPlayer>
+    <ul class="courseDetailClass" id="courseDetailClass">
+      <li class="activeSelect" @click="selectMenu('introduce')">简介</li>
+      <li @click="selectMenu('catalogue')">目录</li>
+    </ul>
+    <swiper :options="swiperOption" ref="myswiper">
+      <swiper-slide>
+        <span class="courseDetail_courseName">{{courseName}}</span>
+        <p class="courseDetail_courseintro">{{intro}}</p>
+        <p class="courseDetail_coursetotalInfo"><span class="courseDetail_courseClass">课程类别：{{courseClassify}}</span>
+        <span class="courseDetail_courseTeacher">主讲老师：{{teacherName}}</span>
+        <span class="courseDetail_coursetotalMic">微课总数：{{totalMic}}</span></p>
+      </swiper-slide>
+      <swiper-slide>
+        <ul class="courseknowPoints">
+          <li v-for="(item, index) in knowPointsTitleList" :key="index">
+            <span class="point"></span>
+            <span class="knowPointName">{{item.knowPointName}}</span>
+            <img src="../assets/imgs/direction@2x.png">
+            <ul class="courseknowPointsVideos">
+              <li v-for="(item, index) in knowPointsChapterList[index]" :key="index">
+                <img src="../assets/imgs/Play@2x.png" class="icon_video">
+                <span>{{item.knowPointName}}</span>
+                <button>课堂作业</button>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </swiper-slide>
+    </swiper>
+    <div class="courseDetailfooter clearMargin_top">
+      <span>{{price}}</span>
+      <span>{{studyCount}}人已学过</span>
+      <button>立即学习</button>
+    </div>
   </div>
 </template>
 
@@ -9,6 +43,7 @@
 import 'video.js/dist/video-js.css'
 import 'vue-video-player/src/custom-theme.css'
 import {videoPlayer} from 'vue-video-player'
+import axios from 'axios'
 export default {
   name: '',
   data () {
@@ -23,7 +58,7 @@ export default {
         preload: 'auto',
         sources: [{
           type: 'video/mp4',
-          src: 'http://www.gk0101.com/upload/video/fa65a4b24d534aecb8957bbccfca1bcd.mp4'
+          src: 'http://www.gk0101.com/upload/video/65f817ed99414d1ca930a101b413b9a0.mp4'
         }],
         controlBar: {
           timeDivider: false,
@@ -31,7 +66,32 @@ export default {
           remainingTimeDisplay: false,
           fullscreenToggle: true
         }
-      }
+      },
+      swiperOption: {
+        on: {
+          slideChangeTransitionEnd () {
+            let courseDetailClassLi = document.getElementById('courseDetailClass').getElementsByTagName('li')
+            for (let i = 0; i < courseDetailClassLi.length; i++) {
+              if (i === this.activeIndex) {
+                courseDetailClassLi[i].setAttribute('class', 'activeSelect')
+              } else {
+                courseDetailClassLi[i].setAttribute('class', '')
+              }
+            }
+          }
+        }
+      },
+      totalMic: 0,
+      knowPointId: 0,
+      courseName: '',
+      intro: '',
+      teacherName: '',
+      courseClassify: '',
+      price: '免费',
+      studyCount: '',
+      knowPointsTotalList: [],
+      knowPointsTitleList: [],
+      knowPointsChapterList: []
     }
   },
   components: {
@@ -40,7 +100,58 @@ export default {
   methods: {
     goback () {
       this.$router.go(-1)
+    },
+    selectMenu (str) {
+      let courseDetailClassLi = document.getElementById('courseDetailClass').getElementsByTagName('li')
+      if (str === 'catalogue') {
+        courseDetailClassLi[1].setAttribute('class', 'activeSelect')
+        courseDetailClassLi[0].setAttribute('class', '')
+        this.$refs.myswiper.swiper.slideTo(1, 300, false)
+      } else {
+        courseDetailClassLi[0].setAttribute('class', 'activeSelect')
+        courseDetailClassLi[1].setAttribute('class', '')
+        this.$refs.myswiper.swiper.slideTo(0, 300, false)
+      }
     }
+  },
+  created () {
+    // 发送ajax请求得到课程相关信息
+    let userID = localStorage.getItem('userID')
+    let courseId = this.$route.query.courseId
+    let URL = `http://www.gk0101.com/exam/rest/v1/studyProgress/getWapStudyProgress?courseId=${courseId}&userId=${userID}&institutionId=10103`
+    axios.get(URL).then(res => {
+      const result = res.data.data
+      this.knowPointId = result.knowPointId
+      this.totalMic = result.totalMic
+      // 通过knowPointId得到相关视频信息
+      axios.get(`http://www.gk0101.com/resource/rest/v1/file/getVideo?knowPointId=${this.knowPointId}`).then(res => {
+        const result = res.data.data[0]
+        const videoSrc = result.saveFilePath + '/' + result.saveFileName
+        this.$refs.videoPlayer.player.src('http://www.gk0101.com' + videoSrc)
+      })
+    })
+    axios.get(`http://www.gk0101.com/user/study/showKnowPointList?courseId=${courseId}&equipmentType=3&institutionId=10103`).then(res => {
+      const result = res.data.data
+      this.knowPointsTotalList = result.knowPoints
+      this.knowPointsTitleList = this.knowPointsTotalList.filter(item => item.knowPointType === 4)
+      for (let i = 0; i < this.knowPointsTitleList.length; i++) {
+        this.knowPointsChapterList[i] = result.knowPoints.filter(item => item.parentId === this.knowPointsTitleList[i].id)
+      }
+      this.courseName = result.courseName
+      this.intro = result.intro
+      this.teacherName = result.teacherName
+      if (result.courseClassify === 1) {
+        this.courseClassify = '公共课程'
+      } else if (result.courseClassify === 3) {
+        this.courseClassify = '基础课程'
+      } else if (result.courseClassify === 7) {
+        this.courseClassify = '专业课程'
+      }
+      this.studyCount = result.studyCount
+      if (result.price !== 0) {
+        this.price = result.price
+      }
+    })
   }
 }
 </script>
@@ -141,11 +252,135 @@ export default {
         }
       }
     }
+    .swiper-container{
+      background-color: #fff;
+      height: 540px;
+      overflow-y: scroll;
+      .swiper-slide{
+        padding-top: 24px;
+        padding-left: 24px;
+        .courseDetail_courseName{
+          display: block;
+          height:48px;
+          font-size:34px;
+          font-family:PingFangSC-Regular;
+          font-weight:400;
+          color:rgba(0,0,0,1);
+          line-height:48px;
+        }
+        .courseDetail_courseintro{
+          margin-top: 22px;
+          width:704px;
+          font-size:28px;
+          font-family:PingFangSC-Regular;
+          font-weight:400;
+          color:rgba(153,153,153,1);
+          line-height:40px;
+        }
+        .courseDetail_coursetotalInfo{
+          margin-top: 24px;
+          width:704px;
+          height:56px;
+          box-sizing: border-box;
+          margin-bottom: 54px;
+          line-height: 56px;
+          padding: 0 32px;
+          span{
+            font-size:24px;
+            font-family:PingFangSC-Regular;
+            font-weight:400;
+            color:rgba(102,102,102,1);
+            margin-right: 58px;
+            &.courseDetail_coursetotalMic{
+              margin-right: 0;
+            }
+          }
+        }
+        .courseknowPoints{
+          li{
+            width: 684px;
+            margin-bottom: 48px;
+            position: relative;
+            .point{
+              display: inline-block;
+              width:24px;
+              height:24px;
+              border-radius:36px;
+              background:rgba(242,242,242,1);
+              position: absolute;
+              left: 0;
+              top: 12px;
+            }
+            .knowPointName{
+              display: inline-block;
+              width: 560px;
+              font-size:34px;
+              font-family:PingFangSC-Regular;
+              font-weight:400;
+              color:rgba(102,102,102,1);
+              line-height:48px;
+              margin-left: 58px;
+            }
+            img{
+              width: 48px;
+              height: 48px;
+              position: absolute;
+              right: 0;
+              top: 0;
+            }
+            .courseknowPointsVideos{
+              margin-left: 58px;
+              margin-top: 32px;
+              li{
+                width: 634px;
+                height: 48px;
+                margin-bottom: 46px;
+                line-height: 48px;
+                position: relative;
+                .icon_video{
+                  position: absolute;
+                  left: 0;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  width:39px;
+                  height:39px;
+                }
+                span{
+                  margin-left: 47px;
+                  height:34px;
+                  font-size:24px;
+                  font-family:PingFangSC-Regular;
+                  font-weight:400;
+                  color:rgba(102,102,102,1);
+                  line-height:34px;
+                }
+                button{
+                  position: absolute;
+                  right: 0;
+                  top: 0;
+                  font-size:24px;
+                  font-family:PingFangSC-Regular;
+                  font-weight:400;
+                  color:rgba(50,70,216,1);
+                  width:154px;
+                  height:48px;
+                  border-radius:36px;
+                  border:2px solid rgba(50,70,216,1);
+                  outline: none;
+                  background: #fff;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 </style>
 <style lang="scss" scoped>
   .coursedetail{
     position: relative;
+    background:rgba(242,242,242,1);
     .backArrow{
       position: absolute;
       left: 38px;
@@ -154,6 +389,68 @@ export default {
       img{
         width: 48px;
         height: 48px;
+      }
+    }
+    .courseDetailClass{
+      height: 98px;
+      display: flex;
+      background:rgba(255,255,255,1);
+      align-items: center;
+      justify-content: space-around;
+      li{
+        width: 68px;
+        height: 98px;
+        line-height: 98px;
+        box-sizing: border-box;
+        font-size:34px;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
+        color:rgba(153,153,153,1);
+        padding-bottom: 24px;
+        &.activeSelect{
+          border-bottom: 4px solid rgba(102,102,102,1);
+        }
+      }
+    }
+    .courseDetailfooter{
+      margin-top: 20px;
+      width: 750px;
+      box-sizing: border-box;
+      height: 208px;
+      background-color: #fff;
+      padding-left: 24px;
+      span{
+        display: block;
+        &:nth-child(1){
+          font-size:34px;
+          margin-top: 24px;
+          font-family:PingFangSC-Regular;
+          font-weight:400;
+          color: #3246D8;
+        }
+        &:nth-child(2){
+          margin-top: 10px;
+          font-size:28px;
+          font-family:PingFangSC-Regular;
+          font-weight:400;
+          color:rgba(153,153,153,1);
+        }
+      }
+      button{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width:750px;
+        height:104px;
+        background:#3246d8;
+        line-height: 104px;
+        text-align: center;
+        border: none;
+        outline: none;
+        font-size:34px;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
+        color:rgba(255,255,255,1);
       }
     }
   }
