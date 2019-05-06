@@ -1,7 +1,7 @@
 <template>
   <div class="coursedetail">
     <div class="backArrow" @click="goback"><img src="../assets/imgs/live_lift@2x.png"></div>
-    <videoPlayer :options='playerOptions' ref="videoPlayer" class="video-player vjs-custom-skin" :playsinline="true"></videoPlayer>
+    <videoPlayer :options='playerOptions' ref="videoPlayer" class="video-player vjs-custom-skin" :playsinline="true" @ended="onPlayerEnded()" @play="onPlayerPlay()"></videoPlayer>
     <ul class="courseDetailClass" id="courseDetailClass">
       <li class="activeSelect" @click="selectMenu('introduce')">简介</li>
       <li @click="selectMenu('catalogue')">目录</li>
@@ -16,14 +16,14 @@
       </swiper-slide>
       <swiper-slide>
         <ul class="courseknowPoints">
-          <li v-for="(item, index) in knowPointsTitleList" :key="index">
-            <span class="point"></span>
-            <span class="knowPointName">{{item.knowPointName}}</span>
-            <img src="../assets/imgs/direction@2x.png">
-            <ul class="courseknowPointsVideos">
+          <li v-for="(item, index) in knowPointsTitleList" :key="index" @click="selectTitle(item.id)">
+            <span class="point" :class="{'selectPoint': selectIndex === item.id}"></span>
+            <span class="knowPointName" :class="{'select': selectIndex === item.id}">{{item.knowPointName}}</span>
+            <img :src="selectIndex === item.id ? courseTitleImg[1] : courseTitleImg[0]">
+            <ul class="courseknowPointsVideos" v-show="selectIndex === item.id">
               <li v-for="(item, index) in knowPointsChapterList[index]" :key="index">
                 <img src="../assets/imgs/Play@2x.png" class="icon_video">
-                <span>{{item.knowPointName}}</span>
+                <span :class="{'selectChapter': selectChapterIndex === item.id}" @click="selectChapter(item.id)">{{item.knowPointName}}</span>
                 <button>课堂作业</button>
               </li>
             </ul>
@@ -89,9 +89,14 @@ export default {
       courseClassify: '',
       price: '免费',
       studyCount: '',
+      firstPlay: true,
       knowPointsTotalList: [],
       knowPointsTitleList: [],
-      knowPointsChapterList: []
+      knowPointsChapterList: [],
+      selectIndex: 0,
+      selectChapterIndex: 0,
+      studyData: '',
+      courseTitleImg: ['./static/img/direction@2x.png', './static/img/live_right_spread.png']
     }
   },
   components: {
@@ -112,6 +117,40 @@ export default {
         courseDetailClassLi[1].setAttribute('class', '')
         this.$refs.myswiper.swiper.slideTo(0, 300, false)
       }
+    },
+    selectTitle (i) {
+      this.selectIndex = i
+    },
+    onPlayerPlay () {
+      if (this.firstPlay) {
+        this.firstPlay = false
+        axios.get(`http://www.gk0101.com/exam/rest/v1/studySheet/saveWapStudySheet?courseId=${this.$route.query.courseId}&knowPointId=${this.knowPointId}&userId=${localStorage.getItem('userID')}&institutionId=10103`).then(res => {
+          const result = res.data.data
+          this.studyData = result
+        })
+        axios.get(`http://www.gk0101.com/exam/rest/v1/studyProgress/getWapStudyProgress?courseId=${this.$route.query.courseId}&userId=${localStorage.getItem('userID')}&institutionId=10103`).then(res => {})
+      }
+    },
+    onPlayerEnded () {
+      let URL = `http://www.gk0101.com/exam/rest/v1/studySheet/updateWapStudySheet?studySheetId=${this.studyData}&institutionId=10103`
+      let URL2 = `http://www.gk0101.com/exam/rest/v1/studyProgress/saveWapStudyProgress?courseId=${this.$route.query.courseId}&knowPointId=${this.knowPointId}&userId=${localStorage.getItem('userID')}&institutionId=10103`
+      axios.get(URL).then(res => {})
+      axios.get(URL2).then(res => {})
+    },
+    selectChapter (i) {
+      this.selectChapterIndex = i
+      this.knowPointId = i
+      axios.get(`http://www.gk0101.com/resource/rest/v1/file/getVideo?knowPointId=${i}`).then(res => {
+        const result = res.data.data[0]
+        const videoSrc = result.saveFilePath + '/' + result.saveFileName
+        this.$refs.videoPlayer.player.src('http://www.gk0101.com' + videoSrc)
+      })
+      let URL = `http://www.gk0101.com/exam/rest/v1/studySheet/saveWapStudySheet?courseId=${this.$route.query.courseId}&knowPointId=${i}&userId=${localStorage.getItem('userID')}&institutionId=10103`
+      axios.get(URL).then(res => {
+        const result = res.data.data
+        this.studyData = result
+      })
+      axios.get(`http://www.gk0101.com/exam/rest/v1/studyProgress/getWapStudyProgress?courseId=${this.$route.query.courseId}&userId=${localStorage.getItem('userID')}&institutionId=10103`).then(res => {})
     }
   },
   created () {
@@ -121,7 +160,8 @@ export default {
     let URL = `http://www.gk0101.com/exam/rest/v1/studyProgress/getWapStudyProgress?courseId=${courseId}&userId=${userID}&institutionId=10103`
     axios.get(URL).then(res => {
       const result = res.data.data
-      this.knowPointId = result.knowPointId
+      this.knowPointId = this.selectChapterIndex = result.knowPointId
+      this.selectIndex = result.chapterId
       this.totalMic = result.totalMic
       // 通过knowPointId得到相关视频信息
       axios.get(`http://www.gk0101.com/resource/rest/v1/file/getVideo?knowPointId=${this.knowPointId}`).then(res => {
@@ -167,7 +207,7 @@ export default {
         transform: translate(-50%,-50%);
         margin-left: 0;
         margin-top: 0 !important;
-        background: url('../assets/imgs/Play@2x.png') center center no-repeat;
+        background: url('../assets/imgs/live_play@2x.png') center center no-repeat;
         background-size: 100% 100%;
         border: none;
         outline: none;
@@ -180,7 +220,7 @@ export default {
         .vjs-play-control{
           width:53px;
           height:53px;
-          background: url('../assets/imgs/Play@2x.png') center center no-repeat;
+          background: url('../assets/imgs/live_play@2x.png') center center no-repeat;
           border: none;
           outline: none;
           background-size: 100% 100%;
@@ -311,6 +351,9 @@ export default {
               left: 0;
               top: 12px;
             }
+            .selectPoint{
+              background: #666666;
+            }
             .knowPointName{
               display: inline-block;
               width: 560px;
@@ -320,6 +363,9 @@ export default {
               color:rgba(102,102,102,1);
               line-height:48px;
               margin-left: 58px;
+            }
+            .select{
+              color: #000000;
             }
             img{
               width: 48px;
@@ -353,6 +399,9 @@ export default {
                   font-weight:400;
                   color:rgba(102,102,102,1);
                   line-height:34px;
+                  &.selectChapter{
+                    color: #000000;
+                  }
                 }
                 button{
                   position: absolute;
