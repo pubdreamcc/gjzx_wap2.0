@@ -7,7 +7,7 @@
     </ul>
     <swiper :options="swiperOption" ref="myswiper">
       <swiper-slide>
-        <div class="courseInfoDetail" v-for="(course, index) in publicCourse" :key="index">
+        <div class="courseInfoDetail" v-for="(course, index) in publicCourse" :key="index" @click="goCourseVideo(course.id)">
           <img :src="'http://www.gk0101.com'+course.coverImg">
           <span class="courseInfo_coursetitle">{{course.courseName}}</span>
           <span class="courseInfo_courseTotal">{{course.totalMic}}节微课</span>
@@ -17,7 +17,7 @@
         </div>
       </swiper-slide>
       <swiper-slide>
-        <div class="courseInfoDetail" v-for="(course, index) in majorCourse" :key="index">
+        <div class="courseInfoDetail" v-for="(course, index) in majorCourse" :key="index" @click="goCourseVideo(course.id)">
           <img :src="'http://www.gk0101.com'+course.coverImg">
           <span class="courseInfo_coursetitle">{{course.courseName}}</span>
           <span class="courseInfo_courseTotal">{{course.totalMic}}节微课</span>
@@ -104,6 +104,14 @@ export default {
         courseClassLi[0].setAttribute('class', '')
         this.$refs.myswiper.swiper.slideTo(1, 300, false)
       }
+    },
+    goCourseVideo (i) {
+      this.$router.push({
+        name: 'CourseDetail',
+        query: {
+          courseId: i
+        }
+      })
     }
   },
   mounted () {

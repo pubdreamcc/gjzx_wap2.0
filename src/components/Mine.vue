@@ -4,7 +4,7 @@
     <p class="banner">登录国凯鲁班学院</p>
     <div class="inputPhone"><span>+86</span><input type="text" placeholder="请输入手机号" v-model="phoneNumber" @blur="checkPhone" @focus="changeFlag0('phone')"><img src="../assets/imgs/mistake@2x.png" v-if="phoneImgFlag" v-show="phoneImgFlag0"><img src="../assets/imgs/correct@2x.png" v-else></div>
     <div class="inputPsd"><input type="password" placeholder="请输入密码" v-model="psd" @focus="changeFlag0('psd')" @blur="checkPsd"><img src="../assets/imgs/mistake@2x.png" v-if="psdImgFlag" v-show="psdImgFlag0"><img src="../assets/imgs/correct@2x.png" v-else></div>
-    <div class="forgetPsd"><span v-show="Tips">请确认手机号和密码有效性</span><span>忘记密码</span></div>
+    <div class="forgetPsd"><span v-show="Tips">请确认手机号和密码有效性</span><span @click="goForgetPsd">忘记密码</span></div>
     <div class="btn"><button class="register_btn" @click="goRegister">注册</button><button class="login_btn" @click="goLogin">登录</button></div>
   </div>
 </template>
@@ -32,6 +32,9 @@ export default {
   methods: {
     goBack () {
       this.$router.go(-1)
+    },
+    goForgetPsd () {
+      this.$router.push('/forgetpsd')
     },
     goRegister () {
       this.$router.replace('/register')

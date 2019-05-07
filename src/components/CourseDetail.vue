@@ -1,7 +1,8 @@
 <template>
   <div class="coursedetail">
     <div class="backArrow" @click="goback"><img src="../assets/imgs/live_lift@2x.png"></div>
-    <videoPlayer :options='playerOptions' ref="videoPlayer" class="video-player vjs-custom-skin" :playsinline="true" @ended="onPlayerEnded()" @play="onPlayerPlay()"></videoPlayer>
+    <videoPlayer :options='playerOptions' ref="videoPlayer" class="video-player vjs-custom-skin" :playsinline="true" @ended="onPlayerEnded()" @play="onPlayerPlay()" v-show="userID"></videoPlayer>
+    <div class="signOutState" v-show="!userID" @click="goLogin"><span>您还未登录，请先去登录</span></div>
     <ul class="courseDetailClass" id="courseDetailClass">
       <li class="activeSelect" @click="selectMenu('introduce')">简介</li>
       <li @click="selectMenu('catalogue')">目录</li>
@@ -96,6 +97,7 @@ export default {
       selectIndex: 0,
       selectChapterIndex: 0,
       studyData: '',
+      userID: localStorage.getItem('userID'),
       courseTitleImg: ['./static/img/direction@2x.png', './static/img/live_right_spread.png']
     }
   },
@@ -105,6 +107,9 @@ export default {
   methods: {
     goback () {
       this.$router.go(-1)
+    },
+    goLogin () {
+      this.$router.push('/mine')
     },
     selectMenu (str) {
       let courseDetailClassLi = document.getElementById('courseDetailClass').getElementsByTagName('li')
@@ -438,6 +443,19 @@ export default {
       img{
         width: 48px;
         height: 48px;
+      }
+    }
+    .signOutState{
+      width:750px;
+      height:422px;
+      background-color: rgb(24,58,83);
+      text-align: center;
+      line-height: 422px;
+      span{
+        color: #fff;
+        font-size:34px;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
       }
     }
     .courseDetailClass{

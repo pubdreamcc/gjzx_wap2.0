@@ -28,7 +28,7 @@
       <p>暂时没有你想要的内容噢！</p>
     </div>
     <div class="course_Info_wrap clearMargin_top" ref="course_Info_wrap">
-      <div class="course_Info" v-for="(course, index) in courses" :key="index">
+      <div class="course_Info" v-for="(course, index) in courses" :key="index" @click="goCourseVideo(course.id)">
         <img :src="'http://www.gk0101.com/'+course.coverImg">
         <div class="course_detail">
           <p>{{course.courseName}}</p>
@@ -88,6 +88,14 @@ export default {
       } else {
         this.$refs.course_Info_wrap.style.marginTop = ''
       }
+    },
+    goCourseVideo (i) {
+      this.$router.push({
+        name: 'CourseDetail',
+        query: {
+          courseId: i
+        }
+      })
     },
     getCourseClass (value) {
       switch (value) {

@@ -142,9 +142,11 @@ export default {
         params.append('params', JSON.stringify(userInfoObj))
         axios.post(URL, params).then(res => {
           let result = res.data.code
+          const userID = res.data.data.id
           if (result === 0) {
             // 注册成功跳转至首页
             this.$router.replace('/home')
+            localStorage.setItem('userID', userID)
             this.errorTipsMsg = ''
           } else {
             this.errorTipsMsg = this.TipsMsg[2]

@@ -10,7 +10,7 @@
    <div class="search_tags" v-show="!keywords.trim()">
      <button v-for="(tag, index) of tags" :key="index" @click="searchCourse(tag)">{{tag}}</button>
    </div>
-   <div class="course_Info" v-for="(course, index) in courses" :key="index">
+   <div class="course_Info" v-for="(course, index) in courses" :key="index" @click="goCourseVideo(course.id)">
      <img :src="'http://www.gk0101.com/'+course.coverImg">
      <div class="course_detail">
        <p>{{course.courseName}}</p>
@@ -58,6 +58,14 @@ export default {
     },
     cancelKeywords () {
       this.keywords = ''
+    },
+    goCourseVideo (i) {
+      this.$router.push({
+        name: 'CourseDetail',
+        query: {
+          courseId: i
+        }
+      })
     }
   },
   watch: {
