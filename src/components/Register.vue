@@ -25,10 +25,14 @@ export default {
       phoneNumber: '',
       confirmNumber: '',
       newPhone: false,
+      timer: 0,
       time: 60,
       TipsMsg: ['手机号码已经注册', '密码为6位且不超过20位的数字或字母或下划线组成', '验证码错误'],
       errorTipsMsg: ''
     }
+  },
+  beforeDestroy () {
+    clearInterval(this.timer)
   },
   watch: {
     phoneNumber () {
@@ -112,11 +116,11 @@ export default {
         if (this.time !== 60) {
           return
         }
-        let timer = setInterval(() => {
+        this.timer = setInterval(() => {
           this.$refs.getConfirm.innerHTML = this.time + 's'
           this.time--
           if (this.time === -1) {
-            clearInterval(timer)
+            clearInterval(this.timer)
             this.time = 60
             this.$refs.getConfirm.innerHTML = '获取验证码'
           }
