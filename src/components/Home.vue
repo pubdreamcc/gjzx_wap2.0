@@ -84,6 +84,14 @@
               <span class="courseInfo_price">免费</span>
             </div>
           </li>
+          <li>
+            <div v-for="(majorCourse, index) in majorCourses8" :key="index" @click="goPlayVideo(majorCourse.id)">
+              <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
+              <span class="courseInfo_title">{{majorCourse.courseName}}</span>
+              <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
+              <span class="courseInfo_price">免费</span>
+            </div>
+          </li>
         </ul>
       </div>
       <div class="img_btn"><img src="../assets/imgs/home_more_icon@2x.png"></div>
@@ -116,6 +124,7 @@ export default {
       majorCourses5: [],
       majorCourses6: [],
       majorCourses7: [],
+      majorCourses8: [],
       swiperOption: {
         centeredSlides: true,
         loop: true,
@@ -172,15 +181,14 @@ export default {
         const result = res.data.data[0].courseInfoVos
         this.majorCourses6 = result
       })
-      if (this.majorID[6]) {
-        axios.get(`http://www.gk0101.com/teach/rest/v1/course/getRecommendCourseByMajorInfoIdOnphone?majorInfoId=${this.majorID[6]}&institutionId=10103&pageNum=0&pageSize=5`).then(res => {
-          const result = res.data.data[0].courseInfoVos
-          this.majorCourses7 = result
-          this.$refs.courseWrapper.getElementsByTagName('ul')[0].style.width = 4942 + 'px'
-        })
-      } else {
-        this.$refs.courseWrapper.getElementsByTagName('ul')[0].style.width = ''
-      }
+      axios.get(`http://www.gk0101.com/teach/rest/v1/course/getRecommendCourseByMajorInfoIdOnphone?majorInfoId=${this.majorID[6]}&institutionId=10103&pageNum=0&pageSize=5`).then(res => {
+        const result = res.data.data[0].courseInfoVos
+        this.majorCourses7 = result
+      })
+      axios.get(`http://www.gk0101.com/teach/rest/v1/course/getRecommendCourseByMajorInfoIdOnphone?majorInfoId=${this.majorID[7]}&institutionId=10103&pageNum=0&pageSize=5`).then(res => {
+        const result = res.data.data[0].courseInfoVos
+        this.majorCourses8 = result
+      })
       this.$nextTick(() => {
         // 初始化better-scroll
         this.scroll = new BScroll(this.$refs.wrapper, {
@@ -403,7 +411,7 @@ export default {
       width: 706px;
       overflow-x: hidden;
       .courseWrapper_content{
-        width: 600%;
+        width: 800%;
         &::after{
           height: 124px;
         }
