@@ -15,6 +15,11 @@ const router = new Router({
       name: 'ForgetPsd'
     },
     {
+      path: '/scan',
+      component: resolve => require(['../components/Scan.vue'], resolve),
+      name: 'Scan'
+    },
+    {
       path: '/coursedetail',
       component: resolve => require(['../components/CourseDetail.vue'], resolve),
       name: 'CourseDetail'

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="header clearMargin_top"><span>首页</span><a href="javascript:;" class="sao"><img src="../assets/imgs/扫一扫@2x.png"></a><a href="#/search" class="search"><img src="../assets/imgs/seek@2x.png"></a></div>
+    <div class="header clearMargin_top"><span>首页</span><a href="#/scan" class="sao"><img src="../assets/imgs/扫一扫@2x.png"></a><a href="#/search" class="search"><img src="../assets/imgs/seek@2x.png"></a></div>
     <div class="slide_banner">
       <swiper :options="swiperOption" v-if="bannerImgs.length>0">
         <swiper-slide v-for="(bannerImg, index) in bannerImgs" :key="index">
@@ -129,8 +129,7 @@ export default {
         centeredSlides: true,
         loop: true,
         slidesPerView: 'auto',
-        loopedSlides: 4,
-        spaceBetween: 32,
+        spaceBetween: '4.27%',
         autoplay: {
           delay: 3000,
           disableOnInteraction: false

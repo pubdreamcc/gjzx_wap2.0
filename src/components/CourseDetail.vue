@@ -206,18 +206,21 @@ export default {
     .video-player{
       width:750px;
       height:422px;
-      .vjs-big-play-button{
-        width:144px;
-        height:144px !important;
-        transform: translate(-50%,-50%);
-        margin-left: 0;
-        margin-top: 0 !important;
-        background: url('../assets/imgs/live_play@2x.png') center center no-repeat;
-        background-size: 100% 100%;
-        border: none;
-        outline: none;
-        span{
-          display: none;
+      .video-js{
+        &>.vjs-big-play-button{
+          width:144px;
+          height:144px !important;
+          transform: translate(-50%,-50%);
+          margin-left: 0 !important;
+          margin-top: 0 !important;
+          background-color: none !important;
+          background: url('../assets/imgs/live_play@2x.png') center center no-repeat;
+          background-size: 100% 100%;
+          border: none;
+          outline: none;
+          span{
+            display: none;
+          }
         }
       }
       .vjs-control-bar{
@@ -267,7 +270,7 @@ export default {
         right: 96px;
       }
       .vjs-progress-control{
-          width: 560px;
+          width: 560px !important;
           flex: none;
           margin-left: 26px;
         .vjs-progress-holder{
