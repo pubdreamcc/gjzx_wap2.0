@@ -20,6 +20,11 @@ const router = new Router({
       name: 'Scan'
     },
     {
+      path: '/task',
+      component: resolve => require(['../components/Task.vue'], resolve),
+      name: 'Task'
+    },
+    {
       path: '/coursedetail',
       component: resolve => require(['../components/CourseDetail.vue'], resolve),
       name: 'CourseDetail'

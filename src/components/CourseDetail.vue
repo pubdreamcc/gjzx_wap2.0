@@ -25,7 +25,7 @@
               <li v-for="(item, index) in knowPointsChapterList[index]" :key="index">
                 <img src="../assets/imgs/Play@2x.png" class="icon_video">
                 <span :class="{'selectChapter': selectChapterIndex === item.id}" @click="selectChapter(item.id)">{{item.knowPointName}}</span>
-                <button>课堂作业</button>
+                <button @click="goTask(item.id, $route.query.courseId)">课堂作业</button>
               </li>
             </ul>
           </li>
@@ -110,6 +110,15 @@ export default {
     },
     goLogin () {
       this.$router.push('/mine')
+    },
+    goTask (knowPointID, courseID) {
+      this.$router.push({
+        name: 'Task',
+        query: {
+          courseId: courseID,
+          knowPointId: knowPointID
+        }
+      })
     },
     selectMenu (str) {
       let courseDetailClassLi = document.getElementById('courseDetailClass').getElementsByTagName('li')

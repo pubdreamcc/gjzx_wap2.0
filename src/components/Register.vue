@@ -311,6 +311,8 @@ export default {
         font-family:PingFangSC-Regular;
         font-weight:400;
         color:rgba(255,255,255,1);
+        border: none;
+        outline: none;
       }
       span{
         display: block;
