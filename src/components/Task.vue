@@ -7,30 +7,30 @@
       <p class="section">{{knowPointName}}</p>
     </div>
     <div class="task_content clearMargin_top">
-      <div class="task_questions" v-for="(item, index) in singleQuestions" :key="index">
+      <div class="task_questions" v-for="item in singleQuestions" :key="item.questionId">
         <span class="type">单选</span>
         <p class='question_title'><span>{{item.questionNo}}.</span>{{item.questionTitle}}</p>
-        <ul class="question_options" title="">
-          <li v-for="(item, index) in item.questItems" :key="index"><img src="../assets/imgs/correct@2x.png" v-if="false"><span v-else class="option_word" @click="selectOption()">{{item.itemsNo}}</span><span class="option_content">{{item.subject}}</span></li>
+        <ul class="question_options">
+          <li v-for="(item2, index) in item.questItems" :key="index"><img src="../assets/imgs/correct@2x.png" v-show="item2.selectItem"><span class="option_word" @click="selectSingleOption(item.questionId, item2.itemsNo, $event)" v-show="item2.selectItem === null">{{item2.itemsNo}}</span><span class="option_content">{{item2.subject}}</span></li>
         </ul>
       </div>
-      <div class="task_questions" v-for="(item, index) in manyQuestions" :key="index">
+      <div class="task_questions" v-for="item in manyQuestions" :key="item.questionId">
         <span class="type">多选</span>
         <p class='question_title'><span>{{item.questionNo}}.</span>{{item.questionTitle}}</p>
         <ul class="question_options">
-          <li v-for="(item, index) in item.questItems" :key="index"><img src="../assets/imgs/correct@2x.png" v-if="false"><span v-else class="option_word">{{item.itemsNo}}</span><span class="option_content">{{item.subject}}</span></li>
+          <li v-for="(item2, index) in item.questItems" :key="index"><img src="../assets/imgs/correct@2x.png" v-show="item2.selectItem" @click="selectManyOption(item.questionId, $event, item2.itemsNo)"><span class="option_word" @click="selectManyOption(item.questionId, $event, item2.itemsNo)" v-show="item2.selectItem === null">{{item2.itemsNo}}</span><span class="option_content">{{item2.subject}}</span></li>
         </ul>
       </div>
-      <div class="task_questions" v-for="(item, index) in judgeQuestions" :key="index">
+      <div class="task_questions" v-for="item in judgeQuestions" :key="item.questionId">
         <span class="type">判断题</span>
         <p class='question_title'><span>{{item.questionNo}}.</span>{{item.questionTitle}}</p>
         <ul class="question_options">
-          <li><img src="../assets/imgs/correct@2x.png" v-if="false"><span v-else class="option_word"></span><span class="option_content">正确</span></li>
-          <li><img src="../assets/imgs/correct@2x.png" v-if="false"><span v-else class="option_word"></span><span class="option_content">错误</span></li>
+          <li><img src="../assets/imgs/correct@2x.png" v-show="item.selAnswer === 'right'"><span class="option_word" @click="selectJudgeOption(item.questionId, $event, 1)" v-show="item.selAnswer === null || item.selAnswer === 'error'"></span><span class="option_content">正确</span></li>
+          <li><img src="../assets/imgs/correct@2x.png" v-show="item.selAnswer === 'error'"><span class="option_word" @click="selectJudgeOption(item.questionId, $event, 0)" v-show="item.selAnswer === 'right' || item.selAnswer === null"></span><span class="option_content">错误</span></li>
         </ul>
       </div>
     </div>
-    <div class="submit">立即提交</div>
+    <div class="submit" @click="submitTask">立即提交</div>
   </div>
 </template>
 
@@ -46,7 +46,8 @@ export default {
       singleQuestions: [],
       manyQuestions: [],
       judgeQuestions: [],
-      selectIndex: ''
+      examSheetId: '',
+      flag: false
     }
   },
   created () {
@@ -59,6 +60,7 @@ export default {
     })
     axios.get(`http://www.gk0101.com/exam/rest/v1/exam/stuPaper?examType=0&courseId=${this.$route.query.courseId}&equipmentType=3&institutionId=10103&userId=${localStorage.getItem('userID')}&knowPointId=${this.$route.query.knowPointId}`).then(res => {
       const result = res.data.data.examPaperDto
+      this.examSheetId = result.examSheetId
       if (result.singleSelectsQuestions) {
         this.singleQuestions = result.singleSelectsQuestions
       }
@@ -74,8 +76,93 @@ export default {
     backCourseDetail () {
       this.$router.go(-1)
     },
-    selectOption () {
-      console.log(123)
+    selectSingleOption (id, i, ev) {
+      let allSpan = ev.target.parentNode.parentNode.getElementsByTagName('span')
+      for (let index = 0; index < allSpan.length; index++) {
+        const element = allSpan[index]
+        element.style.display = 'inline-block'
+      }
+      let allImg = ev.target.parentNode.parentNode.getElementsByTagName('img')
+      for (let index = 0; index < allImg.length; index++) {
+        const element = allImg[index]
+        element.style.display = 'none'
+      }
+      ev.target.previousSibling.style.display = 'inline'
+      ev.target.style.display = 'none'
+      // 发送Ajax请求保存用户的答题信息
+      axios.post(`http://www.gk0101.com/exam/rest/v1/exam/saveTestPaper?sysn=false&questionId=${id}&examSheetId=${this.examSheetId}&result=${i}&questionType=1`).then(res => {
+        console.log(res.data)
+      })
+    },
+    selectJudgeOption (id, ev, num) {
+      let allImg = ev.target.parentNode.parentNode.getElementsByTagName('img')
+      let allSpan = ev.target.parentNode.parentNode.getElementsByTagName('span')
+      for (let index = 0; index < allImg.length; index++) {
+        const element = allImg[index]
+        element.style.display = 'none'
+      }
+      for (let index = 0; index < allSpan.length; index++) {
+        const element = allSpan[index]
+        element.style.display = 'inline-block'
+      }
+      ev.target.style.display = 'none'
+      ev.target.previousSibling.style.display = 'inline'
+      axios.post(`http://www.gk0101.com/exam/rest/v1/exam/saveTestPaper?sysn=false&questionId=${id}&examSheetId=${this.examSheetId}&result=${num}&questionType=7`).then(res => {
+        console.log(res.data)
+      })
+    },
+    selectManyOption (id, ev, i) {
+      if (ev.target.nodeName === 'SPAN') {
+        ev.target.style.display = 'none'
+        ev.target.previousSibling.style.display = 'inline'
+        let params = ''
+        let allImgs = ev.target.parentNode.parentNode.getElementsByTagName('img')
+        for (let index = 0; index < allImgs.length; index++) {
+          if (allImgs[index].style.display === 'inline') {
+            params = params + allImgs[index].nextSibling.innerHTML + '@@@@@'
+          }
+        }
+        let indexNum = params.lastIndexOf('@@@@@')
+        params = params.substring(0, indexNum)
+        axios.post(`http://www.gk0101.com/exam/rest/v1/exam/saveTestPaper?sysn=false&questionId=${id}&examSheetId=${this.examSheetId}&result=${params}&questionType=3`).then(res => {
+          console.log(res.data)
+        })
+      } else if (ev.target.nodeName === 'IMG') {
+        ev.target.nextSibling.style.display = 'inline-block'
+        ev.target.style.display = 'none'
+        let params2 = ''
+        let allImgs2 = ev.target.parentNode.parentNode.getElementsByTagName('img')
+        for (let index = 0; index < allImgs2.length; index++) {
+          if (allImgs2[index].style.display === 'inline') {
+            params2 = params2 + allImgs2[index].nextSibling.innerHTML + '@@@@@'
+          }
+        }
+        let indexNum2 = params2.lastIndexOf('@@@@@')
+        params2 = params2.substring(0, indexNum2)
+        axios.post(`http://www.gk0101.com/exam/rest/v1/exam/saveTestPaper?sysn=false&questionId=${id}&examSheetId=${this.examSheetId}&result=${params2}&questionType=3`).then(res => {
+          console.log(res.data)
+        })
+      }
+    },
+    submitTask () {
+      // 判断题目有没全部完成
+      let allUL = document.getElementsByClassName('question_options')
+      for (let index = 0; index < allUL.length; index++) {
+        this.flag = false
+        for (let i = 0; i < allUL[index].getElementsByTagName('img').length; i++) {
+          if (window.getComputedStyle(allUL[index].getElementsByTagName('img')[i], null).display === 'inline') {
+            this.flag = true
+          }
+        }
+        if (this.flag === false) {
+          alert('题目没有做完，不能提交！')
+          return
+        }
+      }
+      // 发送Ajax请求提交用户作业
+      axios.post(`http://www.gk0101.com/exam/rest/v1/exam/submitPaper?examSheetId=${this.examSheetId}`).then(res => {
+        console.log(res.data)
+      })
     }
   }
 }
