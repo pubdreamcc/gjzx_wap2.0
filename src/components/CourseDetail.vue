@@ -112,11 +112,29 @@ export default {
       this.$router.push('/mine')
     },
     goTask (knowPointID, courseID) {
-      this.$router.push({
-        name: 'Task',
-        query: {
-          courseId: courseID,
-          knowPointId: knowPointID
+      // 发送Ajax请求判断用户是否已经做过习题
+      axios.get(`http://www.gk0101.com/exam/rest/v1/exam/stuPaper?userId=${localStorage.getItem('userID')}&courseId=${courseID}&examType=0&institutionId=10103&knowPointId=${knowPointID}`).then(res => {
+        if (res.data.code === 0) {
+          const result = res.data.data
+          if (result.view === 'yes') {
+            this.$router.push({
+              name: 'CompleteTask',
+              query: {
+                courseId: courseID,
+                knowPointId: knowPointID
+              }
+            })
+          } else if (result.view === 'no') {
+            this.$router.push({
+              name: 'Task',
+              query: {
+                courseId: courseID,
+                knowPointId: knowPointID
+              }
+            })
+          }
+        } else {
+          alert('习题正在准备中...')
         }
       })
     },

@@ -25,6 +25,11 @@ const router = new Router({
       name: 'Task'
     },
     {
+      path: '/completetask',
+      component: resolve => require(['../components/CompleteTask.vue'], resolve),
+      name: 'CompleteTask'
+    },
+    {
       path: '/coursedetail',
       component: resolve => require(['../components/CourseDetail.vue'], resolve),
       name: 'CourseDetail'

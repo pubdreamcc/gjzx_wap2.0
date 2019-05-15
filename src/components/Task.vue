@@ -161,7 +161,13 @@ export default {
       }
       // 发送Ajax请求提交用户作业
       axios.post(`http://www.gk0101.com/exam/rest/v1/exam/submitPaper?examSheetId=${this.examSheetId}`).then(res => {
-        console.log(res.data)
+        this.$router.replace({
+          name: 'CompleteTask',
+          query: {
+            courseId: this.$route.query.courseId,
+            knowPointId: this.$route.query.knowPointId
+          }
+        })
       })
     }
   }
@@ -227,7 +233,6 @@ export default {
       }
       .chapter{
         margin-top: 20px;
-        height:40px;
         font-size:34px;
         font-family:PingFangSC-Regular;
         font-weight:400;
@@ -252,6 +257,7 @@ export default {
         border-radius:12px;
         margin: 0 auto 22px;
         padding-top: 52px;
+        padding-bottom: 24px;
         box-sizing: border-box;
         .type{
           display: inline-block;
