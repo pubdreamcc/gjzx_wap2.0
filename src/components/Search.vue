@@ -4,7 +4,7 @@
      <img src="../assets/imgs/course_seek@2x.png" class="search_icon">
      <input type="text" placeholder="请输入课程关键字" v-model="keywords" @keyup="searchCourse(keywords)">
      <img src="../assets/imgs/seek_close@2x.png" class="cancel_search" v-show="keywords.trim()" @click="cancelKeywords">
-     <a href="#/home">取消</a>
+     <a href="javascript:;" @click="cancelSearch">取消</a>
    </div>
    <div class="line"></div>
    <div class="search_tags" v-show="!keywords.trim()">
@@ -15,7 +15,7 @@
      <div class="course_detail">
        <p>{{course.courseName}}</p>
        <span>{{course.totalMic}}节微课</span>
-       <span>免费</span>
+       <span>{{course.price}}</span>
      </div>
    </div>
    <div class="search_error" v-show="error_flag"><img src="../assets/imgs/search_not_found@2x.png"><p>暂时没有满足条件的课程</p></div>
@@ -28,7 +28,7 @@ export default {
   name: '',
   data () {
     return {
-      tags: ['我们深圳', '文科教学', '安全教育', '哲学人生', '数码摄影', '直播回放', '电子商务', '机械识图'],
+      tags: ['安全生产', '钢筋工', '模板工', '砌筑工', '油漆工', '防水工'],
       keywords: '',
       courses: [],
       error_flag: false
@@ -66,6 +66,9 @@ export default {
           courseId: i
         }
       })
+    },
+    cancelSearch () {
+      this.$router.go(-1)
     }
   },
   watch: {
@@ -99,7 +102,6 @@ export default {
         color:rgba(51,51,51,1);
         width:622px;
         height:64px;
-        line-height: 64px;
         background:rgba(242,242,242,1);
         border-radius:30px;
         &::-webkit-input-placeholder{

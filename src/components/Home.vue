@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="header clearMargin_top"><span>首页</span><a href="#/scan" class="sao"><img src="../assets/imgs/扫一扫@2x.png"></a><a href="#/search" class="search"><img src="../assets/imgs/seek@2x.png"></a></div>
+    <div class="header clearMargin_top"><span>首页</span><a href="javascript:;" class="sao" @click="scan"><img src="../assets/imgs/扫一扫@2x.png"></a><a href="#/search" class="search"><img src="../assets/imgs/seek@2x.png"></a></div>
     <div class="slide_banner">
       <swiper :options="swiperOption" v-if="bannerImgs.length>0">
         <swiper-slide v-for="(bannerImg, index) in bannerImgs" :key="index">
@@ -33,7 +33,7 @@
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
-              <span class="courseInfo_price">免费</span>
+              <span class="courseInfo_price"></span>
             </div>
           </li>
           <li>
@@ -41,7 +41,7 @@
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
-              <span class="courseInfo_price">免费</span>
+              <span class="courseInfo_price"></span>
             </div>
           </li>
           <li>
@@ -49,7 +49,7 @@
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
-              <span class="courseInfo_price">免费</span>
+              <span class="courseInfo_price"></span>
             </div>
           </li>
           <li>
@@ -57,7 +57,7 @@
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
-              <span class="courseInfo_price">免费</span>
+              <span class="courseInfo_price"></span>
             </div>
           </li>
           <li>
@@ -65,7 +65,7 @@
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
-              <span class="courseInfo_price">免费</span>
+              <span class="courseInfo_price"></span>
             </div>
           </li>
           <li>
@@ -73,7 +73,7 @@
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
-              <span class="courseInfo_price">免费</span>
+              <span class="courseInfo_price"></span>
             </div>
           </li>
           <li>
@@ -81,7 +81,7 @@
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
-              <span class="courseInfo_price">免费</span>
+              <span class="courseInfo_price"></span>
             </div>
           </li>
           <li>
@@ -89,7 +89,7 @@
               <img :src="'http://www.gk0101.com'+majorCourse.coverImg">
               <span class="courseInfo_title">{{majorCourse.courseName}}</span>
               <span class="courseInfo_totalClass">{{majorCourse.totalMic}}节微课</span>
-              <span class="courseInfo_price">免费</span>
+              <span class="courseInfo_price"></span>
             </div>
           </li>
         </ul>
@@ -235,6 +235,14 @@ export default {
           courseId: i
         }
       })
+    },
+    scan () {
+      // 通知原生去扫码
+      if (window.JSIAppData) {
+        window.JSIAppData.scan()
+      } else if (window.webkit) {
+        window.webkit.messageHandlers.scan.postMessage(null)
+      }
     }
   },
   computed: {
@@ -335,7 +343,6 @@ export default {
     .live_word{
       margin-left: 22px;
       display: inline-block;
-      width:68px;
       height:48px;
       font-size:34px;
       font-family:PingFangSC-Regular;
@@ -345,7 +352,6 @@ export default {
     }
     a{
       float: right;
-      width:96px;
       height:34px;
       font-size:24px;
       font-family:PingFangSC-Regular;
@@ -475,7 +481,7 @@ export default {
     .img_btn{
       position: absolute;
       right: 22px;
-      top: 0;
+      top: -6.5px;
       img{
         width: 48px;
         height: 48px;
@@ -494,13 +500,13 @@ export default {
     border-top: 1px solid rgba(242,242,242,1);
     margin-top: 22px;
     .home{
-      width: 96px;
+      width: 100px;
       text-align: center;
       span{
         display: block;
-        width:96px;
+        width:100px;
         height:28px;
-        font-size:20px;
+        font-size:24px;
         font-family:PingFangSC-Regular;
         font-weight:400;
         color:rgba(50,70,216,1);
@@ -508,20 +514,20 @@ export default {
       }
       &:nth-child(1){
         img{
-          width: 42px;
-          height: 42px;
+          width: 48px;
+          height: 48px;
         }
       }
       &:nth-child(2){
         img{
-          width: 54px;
-          height: 36px;
+          width: 60px;
+          height: 60px;
         }
       }
       &:nth-child(3){
         img{
-          width: 38px;
-          height: 45px;
+          width: 60px;
+          height: 60px;
         }
       }
     }

@@ -16,12 +16,12 @@
   </div>
   <div class="myInfoClass">
     <div @click="goMyCourse"><img src="../assets/imgs/course@2x.png"><span>我的课程</span></div>
-    <div><img src="../assets/imgs/me_job@2x.png"><span>课后作业</span></div>
-    <div><img src="../assets/imgs/me_examination@2x.png"><span>我的考试</span></div>
+    <div @click="goMyHomeWork"><img src="../assets/imgs/me_job@2x.png"><span>课后作业</span></div>
+    <div @click="goMyExam"><img src="../assets/imgs/me_examination@2x.png"><span>我的考试</span></div>
     <div @click="goExaminationRegistration"><img src="../assets/imgs/me_apply@2x.png"><span>考试报名</span></div>
     <div @click="goMyScore"><img src="../assets/imgs/me_performance@2x.png"><span>我的成绩</span></div>
-    <div><img src="../assets/imgs/me_creditnce@2x.png"><span>学分</span></div>
-    <div><img src="../assets/imgs/me_record@2x.png"><span>记录</span></div>
+    <div @click="goMyCredit"><img src="../assets/imgs/me_creditnce@2x.png"><span>学分</span></div>
+    <div @click="goMyRecord"><img src="../assets/imgs/me_record@2x.png"><span>记录</span></div>
     <div></div>
   </div>
   <div class="myCertificate clearMargin_top" @click="goMyCertificate">
@@ -29,7 +29,7 @@
     <a href="javascript:;"><img src="../assets/imgs/direction@2x.png"></a>
   </div>
   <div class="myTips clearMargin_top">
-    <div><img src="../assets/imgs/me_indent@2x.png" class="icon"><span>我的订单</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
+    <div @click="goMyOrder"><img src="../assets/imgs/me_indent@2x.png" class="icon"><span>我的订单</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
     <div @click="goMyNotices"><img src="../assets/imgs/me_news@2x.png" class="icon"><span>我的消息</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
     <div><img src="../assets/imgs/me_tickling@2x.png" class="icon"><span>问题反馈</span><span class="phone">400-609-6665</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
     <div @click="goSetting"><img src="../assets/imgs/me_setting up@2x.png" class="icon"><span>设置</span><a href="javascript:;" class="right_arrow"><img src="../assets/imgs/direction@2x.png"></a></div>
@@ -88,14 +88,29 @@ export default {
     goSetting () {
       this.$router.push('/setting')
     },
+    goMyHomeWork () {
+      this.$router.push('/mytask')
+    },
+    goMyOrder () {
+      this.$router.push('/myorder')
+    },
+    goMyExam () {
+      this.$router.push('/myexam')
+    },
     goMyCourse () {
       this.$router.push('/mycourse')
+    },
+    goMyCredit () {
+      this.$router.push('/mycredit')
     },
     goMyScore () {
       this.$router.push('/myscore')
     },
     goPersonInfo () {
       this.$router.push('/personinfo')
+    },
+    goMyRecord () {
+      this.$router.push('/myrecord')
     },
     goExaminationRegistration () {
       this.$router.push('/examinationregistration')
@@ -221,7 +236,7 @@ export default {
       justify-content: space-around;
       align-content: space-around;
       div{
-        width: 94px;
+        width: 100px;
         margin-right: 82px;
         text-align: center;
         span{
@@ -290,8 +305,8 @@ export default {
           height: 48px;
         }
         span{
-          display: inline-block;
-          margin-left: 72px;
+          position: absolute;
+          left: 72px;
           height:48px;
           font-size:34px;
           font-family:PingFangSC-Regular;
@@ -300,14 +315,14 @@ export default {
           line-height:48px;
         }
         .phone{
-          float: right;
-          margin-right: 70px;
-          margin-left: 0;
+          position: absolute;
+          right: 70px;
+          text-align: right;
         }
         .right_arrow{
           position: absolute;
           right: 4px;
-          top: 0;
+          top: -6.5px;
           img{
             width:48px;
             height:48px;
@@ -333,13 +348,13 @@ export default {
     border-top: 1px solid rgba(242,242,242,1);
     margin-top: 22px;
       .home{
-        width: 96px;
+        width: 100px;
         text-align: center;
         span{
           display: block;
-          width:96px;
+          width:100px;
           height:28px;
-          font-size:20px;
+          font-size:24px;
           font-family:PingFangSC-Regular;
           font-weight:400;
           color:rgba(50,70,216,1);
@@ -347,20 +362,20 @@ export default {
         }
         &:nth-child(1){
           img{
-            width: 42px;
-            height: 42px;
+            width: 48px;
+            height: 48px;
           }
         }
         &:nth-child(2){
           img{
-            width: 54px;
-            height: 36px;
+            width: 60px;
+            height: 60px;
           }
         }
         &:nth-child(3){
           img{
-            width: 38px;
-            height: 45px;
+            width: 60px;
+            height: 60px;
           }
         }
       }

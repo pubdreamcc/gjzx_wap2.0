@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-Vue.use(Router)
+// import Vue from 'vue'
+// import VueRouter from 'vue-router'
+// Vue.use(VueRouter)
 
-const router = new Router({
+const router = new VueRouter({
   routes: [
     {
       path: '/home',
@@ -15,14 +15,14 @@ const router = new Router({
       name: 'ForgetPsd'
     },
     {
-      path: '/scan',
-      component: resolve => require(['../components/Scan.vue'], resolve),
-      name: 'Scan'
-    },
-    {
       path: '/task',
       component: resolve => require(['../components/Task.vue'], resolve),
       name: 'Task'
+    },
+    {
+      path: '/coursebuy',
+      component: resolve => require(['../components/CourseBuy.vue'], resolve),
+      name: 'CourseBuy'
     },
     {
       path: '/completetask',
@@ -30,9 +30,44 @@ const router = new Router({
       name: 'CompleteTask'
     },
     {
+      path: '/mytask',
+      component: resolve => require(['../components/MyTask.vue'], resolve),
+      name: 'MyTask'
+    },
+    {
+      path: '/mycredit',
+      component: resolve => require(['../components/MyCredit.vue'], resolve),
+      name: 'MyCredit'
+    },
+    {
+      path: '/myexam',
+      component: resolve => require(['../components/MyExam.vue'], resolve),
+      name: 'MyExam'
+    },
+    {
+      path: '/examread',
+      component: resolve => require(['../components/ExamRead.vue'], resolve),
+      name: 'ExamRead'
+    },
+    {
+      path: '/myorder',
+      component: resolve => require(['../components/MyOrder.vue'], resolve),
+      name: 'MyOrder'
+    },
+    {
+      path: '/doexam',
+      component: resolve => require(['../components/DoExam.vue'], resolve),
+      name: 'DoExam'
+    },
+    {
       path: '/coursedetail',
       component: resolve => require(['../components/CourseDetail.vue'], resolve),
       name: 'CourseDetail'
+    },
+    {
+      path: '/myrecord',
+      component: resolve => require(['../components/MyRecord.vue'], resolve),
+      name: 'MyRecord'
     },
     {
       path: '/examinationregistration',

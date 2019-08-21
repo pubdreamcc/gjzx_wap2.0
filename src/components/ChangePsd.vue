@@ -10,7 +10,9 @@
 </template>
 
 <script>
+import 'vant/lib/dialog/style'
 import axios from 'axios'
+import Dialog from 'vant/lib/dialog'
 export default {
   name: '',
   data () {
@@ -47,8 +49,9 @@ export default {
             params.append('newPassword', this.newPsd.trim())
             axios.post(URL, params).then(res => {
               if (res.data.code === 0) {
-                alert('修改成功')
-                this.$router.go(-1)
+                Dialog.alert({message: '修改成功', confirmButtonColor: '#3246d8'}).then(() => {
+                  this.$router.go(-1)
+                })
               }
             })
           } else {
@@ -61,6 +64,21 @@ export default {
 }
 </script>
 
+<style lang='scss'>
+  .van-dialog{
+    width: 60%;
+    height: 200px;
+    .van-dialog__message{
+      font-size: 28px;
+      height: 70px;
+    }
+    .van-button{
+      font-size: 28px;
+      border-top: 1px solid #999; /*no*/
+      padding-top: 15px;
+    }
+  }
+</style>
 <style lang="scss" scoped>
   .changepsd{
     width:750px;
@@ -107,7 +125,6 @@ export default {
         color: #333;
         width: 100%;
         height: 100%;
-        line-height: 88px;
         &::-webkit-input-placeholder{
           color:rgba(153,153,153,1);
         }

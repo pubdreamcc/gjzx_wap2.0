@@ -6,16 +6,25 @@
    </div>
    <div class="aboutUs position_class" @click="goAboutUs"><span>关于我们</span><img src="../assets/imgs/direction@2x.png"></div>
    <div class="evaluate position_class"><span>评价</span><img src="../assets/imgs/direction@2x.png"></div>
+   <div class="fingerPrint position_class" v-if="!NOFingerPrint" @click="handleClick"><span>开启指纹验证</span><van-switch v-model="checked"/></div>
    <div class="changePsd position_class" @click="goChangePsd"><span>修改密码</span><img src="../assets/imgs/direction@2x.png"></div>
    <div class="Sign_out"><span @click="signOut">退出登录</span></div>
  </div>
 </template>
 
 <script>
+import Switch from 'vant/lib/switch'
+import 'vant/lib/switch/style'
 export default {
   name: '',
   data () {
-    return {}
+    return {
+      checked: false,
+      NOFingerPrint: false
+    }
+  },
+  components: {
+    vanSwitch: Switch
   },
   methods: {
     signOut () {
@@ -29,6 +38,41 @@ export default {
     },
     goChangePsd () {
       this.$router.push('/changepsd')
+    },
+    changeFingerPrint (num) {
+      switch (num) {
+        case 0:
+          this.checked = false
+          break
+        case 1:
+          this.checked = true
+          break
+        case -1:
+          this.NOFingerPrint = true
+          break
+      }
+    },
+    handleClick (e) {
+      if (e.target === document.getElementsByClassName('van-switch')[0] || e.target === document.getElementsByClassName('van-switch__node')[0]) {
+      } else {
+        this.checked = !this.checked
+      }
+      if (window.JSIAppData) {
+        window.JSIAppData.clickText(this.checked)
+      } else if (window.webkit) {
+        window.webkit.messageHandlers.JSObject.postMessage(this.checked)
+      }
+    }
+  },
+  mounted () {
+    // 把自己定义的方法传到 window 对象，供原生调用
+    this.$app.changeFingerPrint = this.changeFingerPrint
+    // 告诉安卓自己到了设置页
+    if (window.JSIAppData) {
+      window.JSIAppData.currentPage('setting')
+    } else if (window.webkit) {
+      // 告诉 IOS 自己到了设置页
+      window.webkit.messageHandlers.currentPage.postMessage('setting')
     }
   }
 }
@@ -66,6 +110,13 @@ export default {
     }
     .aboutUs{
       margin-top: 24px;
+    }
+    .fingerPrint{
+      .van-switch{
+        top: 20px;
+        position: absolute;
+        right: 24px;
+      }
     }
     .position_class{
       height: 88px;

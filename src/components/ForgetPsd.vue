@@ -233,14 +233,13 @@ export default {
         line-height:48px;
       }
       input{
-        border: 2px solid rgba(226,226,226,1);
         outline: none;
+        border: 1px solid rgba(153,153,153,1); /*no*/
         width:600px;
         height:96px;
         border-radius: 48px;
         padding-left: 144px;
         box-sizing: border-box;
-        line-height: 96px;
         font-size:34px;
         font-family:PingFangSC-Regular;
         font-weight:400;
@@ -266,13 +265,12 @@ export default {
         box-sizing: border-box;
         width:600px;
         height:96px;
+        border: 1px solid rgba(153,153,153,1); /*no*/
         border-radius:48px;
-        border:2px solid rgba(226,226,226,1);
         font-size:34px;
         font-family:PingFangSC-Regular;
         font-weight:400;
         color:#333333;
-        line-height:96px;
         padding-left: 46px;
         &::-webkit-input-placeholder{
           color: #999999;
@@ -312,9 +310,8 @@ export default {
         font-weight:400;
         color: #333333;
         box-sizing: border-box;
+        border: 1px solid rgba(153,153,153,1); /*no*/
         padding-left: 46px;
-        line-height:96px;
-        border:2px solid rgba(226,226,226,1);
         &::-webkit-input-placeholder{
           color: #999999;
         }
@@ -341,9 +338,8 @@ export default {
         font-weight:400;
         color: #333333;
         box-sizing: border-box;
+        border: 1px solid rgba(153,153,153,1); /*no*/
         padding-left: 46px;
-        line-height:96px;
-        border:2px solid rgba(226,226,226,1);
         &::-webkit-input-placeholder{
           color: #999999;
         }

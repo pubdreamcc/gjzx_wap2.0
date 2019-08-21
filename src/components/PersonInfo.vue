@@ -7,7 +7,7 @@
    </div>
    <div class="person_img">
      <span class="commonSpan">头像</span>
-     <a href="javascript:;"><input type="file" id="file01" name="file01" accept=".png,.jpg" @change="showImg"><img :src="personinfo.userImg"></a>
+     <a href="javascript:;"><input type="file" id="file01" name="file01" accept="image/*" @change="showImg"><img :src="personinfo.userImg"></a>
    </div>
    <div class="name commonHeight"><span class="commonHeight_Span">姓名</span><span class="commonHeight_SpanRight"><input type="text" placeholder="请输入您的姓名" v-model="name"></span></div>
    <div class="sex commonHeight"><span class="commonHeight_Span">性别</span><span class="commonHeight_SpanRight"><label for="male">男</label><input type="radio" id="male" name="sex" :checked="male" class="sex_input" ref="radioMale"><label for="female">女</label><input type="radio" id="female" name="sex" :checked="female" class="sex_input" ref="radioFemale"></span></div>
@@ -47,9 +47,15 @@ export default {
       if (result.userImg) {
         this.personinfo.userImg = 'http://www.gk0101.com' + result.userImg
       }
-      this.WeChat = result.weChat
-      this.qq = result.qq
-      this.email = result.email
+      if (result.weChat !== 'null') {
+        this.WeChat = result.weChat
+      }
+      if (result.qq !== 'null') {
+        this.qq = result.qq
+      }
+      if (result.email !== 'null') {
+        this.email = result.email
+      }
       this.personinfo.sex = result.sex
       if (this.personinfo.sex === 1) {
         this.male = true

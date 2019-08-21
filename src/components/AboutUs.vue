@@ -3,7 +3,7 @@
    <div class="header"><a href="#/setting"><img src="../assets/imgs/live_direction_left@2x.png"></a><span>关于我们</span></div>
    <img src="../assets/imgs/logo@2x.png" class="logo">
    <div class="title"><span>国凯鲁班学院</span></div>
-   <div class="version"><span>V1.0.0</span></div>
+   <div class="version"><span>V2.0.0</span></div>
    <div class="content">
      <p class="introduce">国凯鲁班学院是深圳国泰安教育技术有限公司与广东省凯文职业培训学院联合开发运营的面向建设行业从业人员，全面提升职业技能及职业资格证书培训的在线学习平台，可为学员提供便捷的线上O2O学习综合解决方案。</p>
      <p class="content_Detail"><span class="content_Detail_title">培训项目及服务主要包含:</span><span>20多个建设行业技术工种的培训及继续教育；</span><span>建设行业现场专业人员的培训及继续教育；</span><span>安管三类人员；<span>建造师继续教育及考前辅导；</span></span><span>招投标从业人员培训；</span><span>广东省建设领域专业技术人员的高级技术研修培训；</span><span>BIM培训等。</span></p>

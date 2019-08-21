@@ -1,8 +1,7 @@
 <template>
   <div class="coursedetail">
     <div class="backArrow" @click="goback"><img src="../assets/imgs/live_lift@2x.png"></div>
-    <videoPlayer :options='playerOptions' ref="videoPlayer" class="video-player vjs-custom-skin" :playsinline="true" @ended="onPlayerEnded()" @play="onPlayerPlay()" v-show="userID"></videoPlayer>
-    <div class="signOutState" v-show="!userID" @click="goLogin"><span>您还未登录，请先去登录</span></div>
+    <videoPlayer :options='playerOptions' ref="videoPlayer" class="video-player vjs-custom-skin" :playsinline="true" @ended="onPlayerEnded()" @play="onPlayerPlay()"></videoPlayer>
     <ul class="courseDetailClass" id="courseDetailClass">
       <li class="activeSelect" @click="selectMenu('introduce')">简介</li>
       <li @click="selectMenu('catalogue')">目录</li>
@@ -10,7 +9,7 @@
     <swiper :options="swiperOption" ref="myswiper">
       <swiper-slide>
         <span class="courseDetail_courseName">{{courseName}}</span>
-        <p class="courseDetail_courseintro">{{intro}}</p>
+        <p class="courseDetail_courseintro" v-html="intro"></p>
         <p class="courseDetail_coursetotalInfo"><span class="courseDetail_courseClass">课程类别：{{courseClassify}}</span>
         <span class="courseDetail_courseTeacher">主讲老师：{{teacherName}}</span>
         <span class="courseDetail_coursetotalMic">微课总数：{{totalMic}}</span></p>
@@ -24,7 +23,7 @@
             <ul class="courseknowPointsVideos" v-show="selectIndex === item.id">
               <li v-for="(item, index) in knowPointsChapterList[index]" :key="index">
                 <img src="../assets/imgs/Play@2x.png" class="icon_video">
-                <span :class="{'selectChapter': selectChapterIndex === item.id}" @click="selectChapter(item.id)">{{item.knowPointName}}</span>
+                <span :class="{'selectChapter': selectChapterIndex === item.id, 'learnedKnowPoint': learnedCourse.includes(item.id)}" @click="selectChapter(item.id)">{{item.knowPointName}}</span>
                 <button @click="goTask(item.id, $route.query.courseId)">课堂作业</button>
               </li>
             </ul>
@@ -35,7 +34,7 @@
     <div class="courseDetailfooter clearMargin_top">
       <span>{{price}}</span>
       <span>{{studyCount}}人已学过</span>
-      <button>立即学习</button>
+      <button @click="handleBuy">{{btnText}}</button>
     </div>
   </div>
 </template>
@@ -43,8 +42,10 @@
 <script>
 import 'video.js/dist/video-js.css'
 import 'vue-video-player/src/custom-theme.css'
+import 'vant/lib/dialog/style'
 import {videoPlayer} from 'vue-video-player'
 import axios from 'axios'
+import Dialog from 'vant/lib/dialog'
 export default {
   name: '',
   data () {
@@ -91,13 +92,17 @@ export default {
       price: '免费',
       studyCount: '',
       firstPlay: true,
+      isBuy: false,
       knowPointsTotalList: [],
       knowPointsTitleList: [],
       knowPointsChapterList: [],
+      knowPointsTitleListIndex: [],
       selectIndex: 0,
       selectChapterIndex: 0,
       studyData: '',
-      userID: localStorage.getItem('userID'),
+      learnedCourse: [],
+      btnText: '购买课程',
+      userID: localStorage.getItem('userID') ? localStorage.getItem('userID') : '',
       courseTitleImg: ['./static/img/direction@2x.png', './static/img/live_right_spread.png']
     }
   },
@@ -108,35 +113,63 @@ export default {
     goback () {
       this.$router.go(-1)
     },
+    handleBuy () {
+      if (!this.userID) return this.$router.push('/mine')
+      else {
+        if (this.isBuy) {
+          // 用户已经购买，控制视频播放
+          if (this.$refs.videoPlayer.player.paused) {
+            this.$refs.videoPlayer.player.play()
+          }
+        } else {
+          // 用户没有购买，跳转购买课程路由组件
+          this.$router.push({
+            name: 'CourseBuy',
+            query: {
+              courseId: this.$route.query.courseId
+            }
+          })
+        }
+      }
+    },
     goLogin () {
       this.$router.push('/mine')
     },
     goTask (knowPointID, courseID) {
-      // 发送Ajax请求判断用户是否已经做过习题
-      axios.get(`http://www.gk0101.com/exam/rest/v1/exam/stuPaper?userId=${localStorage.getItem('userID')}&courseId=${courseID}&examType=0&institutionId=10103&knowPointId=${knowPointID}`).then(res => {
-        if (res.data.code === 0) {
-          const result = res.data.data
-          if (result.view === 'yes') {
-            this.$router.push({
-              name: 'CompleteTask',
-              query: {
-                courseId: courseID,
-                knowPointId: knowPointID
-              }
-            })
-          } else if (result.view === 'no') {
-            this.$router.push({
-              name: 'Task',
-              query: {
-                courseId: courseID,
-                knowPointId: knowPointID
-              }
-            })
-          }
+      if (!this.userID) {
+        // 跳转登录页
+        return this.$router.push('/mine')
+      } else {
+        if (!this.isBuy) {
+          return Dialog.alert({message: '请先购买课程！', confirmButtonColor: '#3246d8', closeOnPopstate: true, closeOnClickOverlay: true})
         } else {
-          alert('习题正在准备中...')
+          // 发送Ajax请求判断用户是否已经做过习题
+          axios.get(`http://www.gk0101.com/exam/rest/v1/exam/stuPaper?userId=${this.userID}&courseId=${courseID}&examType=0&institutionId=10103&knowPointId=${knowPointID}`).then(res => {
+            if (res.data.code === 0) {
+              const result = res.data.data
+              if (result.view === 'yes') {
+                this.$router.push({
+                  name: 'CompleteTask',
+                  query: {
+                    courseId: courseID,
+                    knowPointId: knowPointID
+                  }
+                })
+              } else if (result.view === 'no') {
+                this.$router.push({
+                  name: 'Task',
+                  query: {
+                    courseId: courseID,
+                    knowPointId: knowPointID
+                  }
+                })
+              }
+            } else {
+              Dialog.alert({message: '习题正在准备中...', confirmButtonColor: '#3246d8', closeOnPopstate: true, closeOnClickOverlay: true})
+            }
+          })
         }
-      })
+      }
     },
     selectMenu (str) {
       let courseDetailClassLi = document.getElementById('courseDetailClass').getElementsByTagName('li')
@@ -156,59 +189,68 @@ export default {
     onPlayerPlay () {
       if (this.firstPlay) {
         this.firstPlay = false
-        axios.get(`http://www.gk0101.com/exam/rest/v1/studySheet/saveWapStudySheet?courseId=${this.$route.query.courseId}&knowPointId=${this.knowPointId}&userId=${localStorage.getItem('userID')}&institutionId=10103`).then(res => {
+        axios.get(`http://www.gk0101.com/exam/rest/v1/studySheet/saveWapStudySheet?courseId=${this.$route.query.courseId}&knowPointId=${this.knowPointId}&userId=${this.userID}&institutionId=10103`).then(res => {
           const result = res.data.data
           this.studyData = result
         })
-        axios.get(`http://www.gk0101.com/exam/rest/v1/studyProgress/getWapStudyProgress?courseId=${this.$route.query.courseId}&userId=${localStorage.getItem('userID')}&institutionId=10103`).then(res => {})
+        axios.get(`http://www.gk0101.com/exam/rest/v1/studyProgress/getWapStudyProgress?courseId=${this.$route.query.courseId}&userId=${this.userID}&institutionId=10103`).then(res => {})
       }
     },
     onPlayerEnded () {
       let URL = `http://www.gk0101.com/exam/rest/v1/studySheet/updateWapStudySheet?studySheetId=${this.studyData}&institutionId=10103`
-      let URL2 = `http://www.gk0101.com/exam/rest/v1/studyProgress/saveWapStudyProgress?courseId=${this.$route.query.courseId}&knowPointId=${this.knowPointId}&userId=${localStorage.getItem('userID')}&institutionId=10103`
+      let URL2 = `http://www.gk0101.com/exam/rest/v1/studyProgress/saveWapStudyProgress?courseId=${this.$route.query.courseId}&knowPointId=${this.knowPointId}&userId=${this.userID}&institutionId=10103`
       axios.get(URL).then(res => {})
       axios.get(URL2).then(res => {})
     },
     selectChapter (i) {
-      this.selectChapterIndex = i
-      this.knowPointId = i
-      axios.get(`http://www.gk0101.com/resource/rest/v1/file/getVideo?knowPointId=${i}`).then(res => {
-        const result = res.data.data[0]
-        const videoSrc = result.saveFilePath + '/' + result.saveFileName
-        this.$refs.videoPlayer.player.src('http://www.gk0101.com' + videoSrc)
-      })
-      let URL = `http://www.gk0101.com/exam/rest/v1/studySheet/saveWapStudySheet?courseId=${this.$route.query.courseId}&knowPointId=${i}&userId=${localStorage.getItem('userID')}&institutionId=10103`
-      axios.get(URL).then(res => {
-        const result = res.data.data
-        this.studyData = result
-      })
-      axios.get(`http://www.gk0101.com/exam/rest/v1/studyProgress/getWapStudyProgress?courseId=${this.$route.query.courseId}&userId=${localStorage.getItem('userID')}&institutionId=10103`).then(res => {})
+      if (!this.userID) {
+        if (i !== this.knowPointId) {
+          // 跳转登录页
+          return this.$router.push('/mine')
+        } else {
+          axios.get(`http://www.gk0101.com/resource/rest/v1/file/getVideo?knowPointId=${i}`).then(res => {
+            const result = res.data.data[0]
+            const videoSrc = result.saveFilePath + '/' + result.saveFileName
+            this.$refs.videoPlayer.player.src('http://www.gk0101.com' + videoSrc)
+          })
+        }
+      } else {
+        if (!this.isBuy && i !== this.knowPointId) {
+          // 没有购买且点击其他知识点
+          return Dialog.alert({message: '请先购买课程！', confirmButtonColor: '#3246d8', closeOnPopstate: true, closeOnClickOverlay: true})
+        } else {
+          this.selectChapterIndex = i
+          this.knowPointId = i
+          axios.get(`http://www.gk0101.com/resource/rest/v1/file/getVideo?knowPointId=${i}`).then(res => {
+            const result = res.data.data[0]
+            const videoSrc = result.saveFilePath + '/' + result.saveFileName
+            this.$refs.videoPlayer.player.src('http://www.gk0101.com' + videoSrc)
+          })
+          let URL = `http://www.gk0101.com/exam/rest/v1/studySheet/saveWapStudySheet?courseId=${this.$route.query.courseId}&knowPointId=${i}&userId=${this.userID}&institutionId=10103`
+          axios.get(URL).then(res => {
+            const result = res.data.data
+            this.studyData = result
+          })
+        }
+      }
     }
   },
   created () {
-    // 发送ajax请求得到课程相关信息
-    let userID = localStorage.getItem('userID')
     let courseId = this.$route.query.courseId
-    let URL = `http://www.gk0101.com/exam/rest/v1/studyProgress/getWapStudyProgress?courseId=${courseId}&userId=${userID}&institutionId=10103`
-    axios.get(URL).then(res => {
-      const result = res.data.data
-      this.knowPointId = this.selectChapterIndex = result.knowPointId
-      this.selectIndex = result.chapterId
-      this.totalMic = result.totalMic
-      // 通过knowPointId得到相关视频信息
-      axios.get(`http://www.gk0101.com/resource/rest/v1/file/getVideo?knowPointId=${this.knowPointId}`).then(res => {
-        const result = res.data.data[0]
-        const videoSrc = result.saveFilePath + '/' + result.saveFileName
-        this.$refs.videoPlayer.player.src('http://www.gk0101.com' + videoSrc)
-      })
-    })
-    axios.get(`http://www.gk0101.com/user/study/showKnowPointList?courseId=${courseId}&equipmentType=3&institutionId=10103`).then(res => {
+    // 获取课程信息列表
+    axios.get(`http://www.gk0101.com/user/study/showKnowPointList?courseId=${courseId}&equipmentType=3&institutionId=10103&userId=${this.userID}`).then(res => {
       const result = res.data.data
       this.knowPointsTotalList = result.knowPoints
       this.knowPointsTitleList = this.knowPointsTotalList.filter(item => item.knowPointType === 4)
+      this.knowPointsTotalList.forEach((item, index) => {
+        if (item.knowPointType === 4) {
+          this.knowPointsTitleListIndex.push(index)
+        }
+      })
       for (let i = 0; i < this.knowPointsTitleList.length; i++) {
-        this.knowPointsChapterList[i] = result.knowPoints.filter(item => item.parentId === this.knowPointsTitleList[i].id)
+        this.knowPointsChapterList[i] = this.knowPointsTotalList.slice(this.knowPointsTitleListIndex[i] + 1, this.knowPointsTitleListIndex[i + 1])
       }
+      this.totalMic = this.knowPointsTotalList.length - this.knowPointsTitleListIndex.length
       this.courseName = result.courseName
       this.intro = result.intro
       this.teacherName = result.teacherName
@@ -219,11 +261,66 @@ export default {
       } else if (result.courseClassify === 7) {
         this.courseClassify = '专业课程'
       }
-      this.studyCount = result.studyCount
+      if (result.studyCount) {
+        this.studyCount = result.studyCount
+      } else {
+        this.studyCount = 0
+      }
       if (result.price !== 0) {
         this.price = result.price
       }
+      if (this.userID) {
+        // 判断用户是否已经购买
+        let params = new URLSearchParams()
+        params.append('institutionId', '10103')
+        params.append('courseId', courseId)
+        params.append('buyerUserId', this.userID)
+        axios.post(`http://www.gk0101.com/user/rest/v1/order/checkCourseIsBuy`, params).then(res => {
+          const ret = res.data.data
+          if (ret.length === 0) {
+            // 用户没有购买该课程
+            this.isBuy = false
+          } else {
+            // 用户已经购买该课程
+            this.isBuy = true
+            this.btnText = '立即学习'
+          }
+        })
+        // 得到学习进度
+        let URL = `http://www.gk0101.com/exam/rest/v1/studyProgress/getWapStudyProgress?courseId=${courseId}&userId=${this.userID}&institutionId=10103`
+        axios.get(URL).then(res => {
+          if (res.data.code === 0) {
+            const result = res.data.data
+            this.knowPointId = this.selectChapterIndex = result.knowPointId
+            this.selectIndex = result.chapterId
+            // 通过knowPointId得到相关视频信息
+            axios.get(`http://www.gk0101.com/resource/rest/v1/file/getVideo?knowPointId=${this.knowPointId}`).then(res => {
+              const result = res.data.data[0]
+              const videoSrc = result.saveFilePath + '/' + result.saveFileName
+              this.$refs.videoPlayer.player.src('http://www.gk0101.com' + videoSrc)
+            })
+          }
+        })
+        // 得到学过的课程
+        axios.get(`http://www.gk0101.com/exam/rest/v1/studySheet/getLearnedKnowPointList?userId=${this.userID}&courseId=${courseId}`).then(res => {
+          const ret = res.data.data
+          for (const item of ret) {
+            this.learnedCourse.push(item.knowPointId)
+          }
+        })
+      } else {
+        // 获取第一节知识点视频
+        this.knowPointId = this.selectChapterIndex = this.knowPointsChapterList[0][0].id
+        axios.get(`http://www.gk0101.com/resource/rest/v1/file/getVideo?knowPointId=${this.knowPointId}`).then(res => {
+          const result = res.data.data[0]
+          const videoSrc = result.saveFilePath + '/' + result.saveFileName
+          this.$refs.videoPlayer.player.src('http://www.gk0101.com' + videoSrc)
+        })
+      }
     })
+  },
+  mounted () {
+    document.getElementsByClassName('vjs-play-control')[0].className = 'vjs-play-control vjs-control vjs-button vjs-playing needsclick'
   }
 }
 </script>
@@ -346,11 +443,17 @@ export default {
         .courseDetail_courseintro{
           margin-top: 22px;
           width:704px;
+          line-height:40px;
           font-size:28px;
           font-family:PingFangSC-Regular;
           font-weight:400;
           color:rgba(153,153,153,1);
-          line-height:40px;
+          span{
+            font-size:28px;
+            font-family:PingFangSC-Regular;
+            font-weight:400;
+            color:rgba(153,153,153,1);
+          }
         }
         .courseDetail_coursetotalInfo{
           margin-top: 24px;
@@ -430,12 +533,18 @@ export default {
                   margin-left: 47px;
                   height:34px;
                   font-size:24px;
+                  width: 420px;
+                  box-sizing: border-box;
+                  display: inline-block;
                   font-family:PingFangSC-Regular;
                   font-weight:400;
-                  color:rgba(102,102,102,1);
+                  color: black;
                   line-height:34px;
+                  &.learnedKnowPoint{
+                    color:rgba(102,102,102,1);
+                  }
                   &.selectChapter{
-                    color: #000000;
+                    color: #3246D8;
                   }
                 }
                 button{
@@ -458,6 +567,19 @@ export default {
           }
         }
       }
+    }
+  }
+  .van-dialog{
+    width: 60%;
+    height: 200px;
+    .van-dialog__message{
+      font-size: 28px;
+      height: 70px;
+    }
+    .van-button{
+      font-size: 28px;
+      border-top: 1px solid #999; /*no*/
+      padding-top: 15px;
     }
   }
 </style>
@@ -495,7 +617,6 @@ export default {
       align-items: center;
       justify-content: space-around;
       li{
-        width: 68px;
         height: 98px;
         line-height: 98px;
         box-sizing: border-box;

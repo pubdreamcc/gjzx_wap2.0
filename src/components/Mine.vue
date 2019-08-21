@@ -53,7 +53,14 @@ export default {
           if (result === 0) {
             // 跳转至首页,登录成功
             this.$router.replace('/home')
+            // 保存userId 到local storage
             localStorage.setItem('userID', userID)
+            // 告诉原生当前userId
+            if (window.JSIAppData) {
+              window.JSIAppData.saveUserId(userID)
+            } else if (window.webkit) {
+              window.webkit.messageHandlers.saveUserId.postMessage(userID)
+            }
           } else {
             // 显示错误提示信息
             this.Tips = true
@@ -92,6 +99,29 @@ export default {
       } else {
         this.psdImgFlag = true
       }
+    },
+    FingerPrintLoginSuccess (id) {
+      // 跳转至首页,登录成功
+      this.$router.replace('/home')
+      // 保存userId 到local storage
+      localStorage.setItem('userID', id)
+      // 告诉原生当前userId
+      if (window.JSIAppData) {
+        window.JSIAppData.saveUserId(id)
+      } else if (window.webkit) {
+        window.webkit.messageHandlers.saveUserId.postMessage(id)
+      }
+    }
+  },
+  mounted () {
+    // 挂载FingerPrintLoginSuccess方法到window对象供原生调用
+    this.$app.FingerPrintLoginSuccess = this.FingerPrintLoginSuccess
+    // 告诉安卓自己到了登录页
+    if (window.JSIAppData) {
+      window.JSIAppData.currentPage('login')
+    } else if (window.webkit) {
+      // 告诉iOS 自己到了 登录页
+      window.webkit.messageHandlers.currentPage.postMessage('login')
     }
   }
 }
@@ -130,11 +160,10 @@ export default {
         font-weight:400;
         color:rgba(51,51,51,1);
         outline: none;
+        border: 1px solid rgba(153,153,153,1); /*no*/
         width:600px;
         height:96px;
-        line-height: 96px;
         border-radius:48px;
-        border:4px solid rgba(226,226,226,1);
         padding-left: 144px;
         &::-webkit-input-placeholder{
           color: rgba(153,153,153,1);
@@ -168,7 +197,7 @@ export default {
         width:600px;
         height:96px;
         border-radius:48px;
-        border:4px solid rgba(226,226,226,1);
+        border: 1px solid rgba(153,153,153,1); /*no*/
         outline: none;
         box-sizing: border-box;
         padding-left: 46px;
@@ -176,7 +205,6 @@ export default {
         font-family:PingFangSC-Regular;
         font-weight:400;
         color:rgba(51,51,51,1);
-        line-height: 96px;
         &::-webkit-input-placeholder{
           color: rgba(153,153,153,1);
         }
@@ -193,10 +221,10 @@ export default {
       margin-top: 34px;
       padding-right: 74px;
       padding-left: 76px;
+      overflow: hidden;
       span{
         &:nth-child(2){
         float: right;
-        width:112px;
         height:40px;
         font-size:28px;
         font-family:PingFangSC-Regular;
