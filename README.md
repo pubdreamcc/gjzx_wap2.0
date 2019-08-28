@@ -2,7 +2,7 @@
 
 本项目为一个基于 Vue 的 Hybrid App 项目，全部页面均为自己用H5完成，最后通过嵌入原生 webview 框架。扫码和指纹登录功能为原生实现。由于，我已经将打包的ipa文件发布到蒲公英平台，可以直接按照下面链接扫码下载即可。
 
-**下载地址：**<a href="https://www.pgyer.com/W4sm">下载链接（IOS）</a> <a href="http://www.gk0101.com/gk0101_android.apk">下载链接（Android）</a>
+**下载地址：**<a href="https://www.pgyer.com/bd1a59e5a5c729965510b4535a11601b">下载链接（IOS）</a> <a href="http://www.gk0101.com/gk0101_android.apk">下载链接（Android）</a>
 
 Android 安装包为直接的 apk 文件，可以直接下载安装即可。
 
