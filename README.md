@@ -44,6 +44,8 @@ Android 安装包为直接的 apk 文件，可以直接下载安装即可。
 
 * [canvas移动端高宽自适应](https://github.com/pubdreamcc/web-study/blob/master/%E5%B9%B3%E6%97%B6%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93/canvas%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%AB%98%E5%AE%BD%E8%87%AA%E9%80%82%E5%BA%94.md)
 
+* [移动端开发必须知道的小技巧](https://github.com/pubdreamcc/web-study/blob/master/%E5%B9%B3%E6%97%B6%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93.md)
+
 ## 主体界面展示
 
 1. 首页
