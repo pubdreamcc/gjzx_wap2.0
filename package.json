@@ -15,7 +15,7 @@
     "axios": "^0.18.0",
     "better-scroll": "^1.15.2",
     "fastclick": "^1.0.6",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "px2rem-loader": "^0.1.9",
     "sass-loader": "^7.1.0",
     "vant": "^2.1.1",
